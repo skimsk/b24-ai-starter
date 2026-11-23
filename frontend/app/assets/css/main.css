@@ -7,7 +7,17 @@
 }
 
 @theme static {
-
+  /* Акцентная палитра Модульбанка (заменила фиолетовую Точки): классы bg-brand-500, text-brand-600 и т.д. */
+  --color-brand-50: #eef8fd;
+  --color-brand-100: #e5f4fc;
+  --color-brand-200: #bfe3f7;
+  --color-brand-300: #8fd3f5;
+  --color-brand-400: #0299e5;
+  --color-brand-500: #00225c;
+  --color-brand-600: #003478;
+  --color-brand-700: #0277b8;
+  --color-brand-800: #02245d;
+  --color-brand-900: #001846;
 }
 
 /*

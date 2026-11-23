@@ -226,7 +226,8 @@ function handleSandbox() {
 }
 
 .setup-connect__btn--primary:disabled {
-  opacity: 0.5;
+  background: var(--mb-accent);
+  opacity: 0.45;
   cursor: not-allowed;
 }
 

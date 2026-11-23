@@ -1722,7 +1722,7 @@ function statusColor(s: string): string {
     pending: 'bg-blue-50 text-blue-800',
     matched: 'bg-amber-50 text-amber-900',
     applied: 'bg-green-50 text-green-800',
-    refunded: 'bg-violet-50 text-violet-800',
+    refunded: 'bg-lime-50 text-lime-800',
     unprocessed: 'bg-orange-50 text-orange-800',
     error: 'bg-red-50 text-red-800',
     ignored: 'bg-slate-100 text-gray-700',
@@ -1785,7 +1785,7 @@ const canAddCategoryStageRule = computed(() =>
 )
 
 const settingsSelectClass =
-  'settings-select block w-full min-w-[12rem] rounded-lg border border-gray-200 bg-white px-3 py-2.5 pr-9 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-violet-400'
+  'settings-select block w-full min-w-[12rem] rounded-lg border border-gray-200 bg-white px-3 py-2.5 pr-9 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-400'
 
 const funnelSelectOptions = computed(() => [
   { id: DEAL_STAGE_NO_MOVE, name: 'Не перемещать' },
@@ -1978,7 +1978,7 @@ onBeforeUnmount(() => {
           :key="tab.key"
           class="py-3 text-sm font-medium border-b-2 transition-colors"
           :class="activeTab === tab.key
-            ? 'border-violet-500 text-violet-600'
+            ? 'border-brand-500 text-brand-600'
             : 'border-transparent text-gray-500 hover:text-gray-700'"
           @click="activeTab = tab.key as any"
         >
@@ -1988,7 +1988,7 @@ onBeforeUnmount(() => {
           type="button"
           class="py-3 text-sm font-medium border-b-2 transition-colors"
           :class="isSupportOpen
-            ? 'border-violet-500 text-violet-600'
+            ? 'border-brand-500 text-brand-600'
             : 'border-transparent text-gray-500 hover:text-gray-700'"
           @click="openSupport"
         >
@@ -2009,7 +2009,7 @@ onBeforeUnmount(() => {
               type="button"
               class="relative shrink-0 p-2 rounded-lg border transition-colors"
               :class="paymentSearchOpen || hasActivePaymentSearch
-                ? 'border-violet-400 bg-violet-50 text-violet-600'
+                ? 'border-brand-400 bg-brand-50 text-brand-600'
                 : 'border-gray-200 text-gray-500 hover:border-gray-300 hover:bg-gray-50'"
               aria-label="Поиск платежей"
               @click.stop="togglePaymentSearch"
@@ -2019,7 +2019,7 @@ onBeforeUnmount(() => {
               </svg>
               <span
                 v-if="hasActivePaymentSearch"
-                class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-violet-500"
+                class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-brand-500"
               />
             </button>
             <div class="flex flex-wrap items-center gap-2 min-w-0">
@@ -2028,7 +2028,7 @@ onBeforeUnmount(() => {
                 :key="f.key"
                 class="px-3 py-1 rounded-full text-xs font-medium border transition-colors whitespace-nowrap"
                 :class="paymentFilter === f.key
-                  ? 'border-violet-500 bg-violet-50 text-violet-700'
+                  ? 'border-brand-500 bg-brand-50 text-brand-700'
                   : `border-gray-200 text-gray-500 hover:border-gray-300 ${f.color}`"
                 @click="paymentFilter = f.key; currentPage = 1; loadPayments()"
               >
@@ -2091,7 +2091,7 @@ onBeforeUnmount(() => {
               </button>
               <button
                 type="button"
-                class="px-4 py-2 bg-violet-500 hover:bg-violet-600 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap disabled:opacity-50"
+                class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap disabled:opacity-50"
                 :disabled="isManualSyncing"
                 @click="quickSyncPayments"
               >
@@ -2110,17 +2110,17 @@ onBeforeUnmount(() => {
           >
             <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             <div
-              class="flex flex-wrap items-center gap-1.5 pl-9 pr-9 py-1.5 min-h-[38px] border border-gray-200 rounded-lg text-sm w-full focus-within:ring-2 focus-within:ring-violet-400 focus-within:border-transparent bg-white"
+              class="flex flex-wrap items-center gap-1.5 pl-9 pr-9 py-1.5 min-h-[38px] border border-gray-200 rounded-lg text-sm w-full focus-within:ring-2 focus-within:ring-brand-400 focus-within:border-transparent bg-white"
             >
               <span
                 v-for="chip in paymentSearchChips"
                 :key="chip.key + chip.label"
-                class="inline-flex items-center gap-1 max-w-[14rem] px-2 py-0.5 rounded-md bg-violet-50 text-violet-800 text-xs shrink-0"
+                class="inline-flex items-center gap-1 max-w-[14rem] px-2 py-0.5 rounded-md bg-brand-50 text-brand-800 text-xs shrink-0"
               >
                 <span class="truncate">{{ chip.label }}</span>
                 <button
                   type="button"
-                  class="shrink-0 text-violet-500 hover:text-violet-800 leading-none"
+                  class="shrink-0 text-brand-500 hover:text-brand-800 leading-none"
                   aria-label="Удалить фильтр"
                   @click="removePaymentSearchChip(chip.key)"
                 >
@@ -2153,9 +2153,9 @@ onBeforeUnmount(() => {
         <div v-if="isManualSyncing" class="flex flex-col items-center justify-center py-20">
           <div class="relative w-20 h-20 mb-4">
             <div class="absolute inset-0 rounded-full border-4 border-gray-200" />
-            <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-violet-500 animate-spin" />
+            <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-brand-500 animate-spin" />
             <div class="absolute inset-0 flex items-center justify-center">
-              <svg class="w-8 h-8 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-8 h-8 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
             </div>
@@ -2166,7 +2166,7 @@ onBeforeUnmount(() => {
         <!-- Payments table -->
         <div v-else-if="tochkaStore.payments.length > 0">
           <!-- Total amount -->
-          <div class="text-sm text-violet-600 font-medium mb-2">{{ formatCurrency(tochkaStore.paymentsTotalAmount) }}</div>
+          <div class="text-sm text-brand-600 font-medium mb-2">{{ formatCurrency(tochkaStore.paymentsTotalAmount) }}</div>
 
           <!-- Payments table -->
           <div class="overflow-x-auto payments-table-wrap">
@@ -2204,7 +2204,7 @@ onBeforeUnmount(() => {
                 <!-- Date row -->
                 <tr>
                   <td colspan="11" class="pt-5 pb-2">
-                    <div class="flex items-center gap-2 text-sm font-medium text-violet-600">
+                    <div class="flex items-center gap-2 text-sm font-medium text-brand-600">
                       <span>{{ formatCurrency(group.total) }}</span>
                       <span>{{ formatDateHeader(dateKey) }}</span>
                     </div>
@@ -2233,7 +2233,7 @@ onBeforeUnmount(() => {
                         <button
                           v-if="p.matched_invoice_id"
                           type="button"
-                          class="inline-flex min-w-[2rem] items-center justify-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium tabular-nums text-gray-700 transition-colors hover:bg-violet-100 hover:text-violet-700"
+                          class="inline-flex min-w-[2rem] items-center justify-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium tabular-nums text-gray-700 transition-colors hover:bg-brand-100 hover:text-brand-700"
                           @click="openInvoice(p.matched_invoice_id)"
                         >
                           {{ paymentInvoiceNumber(p) }}
@@ -2304,7 +2304,7 @@ onBeforeUnmount(() => {
 
                             <div
                               v-if="p.matched_invoice_id && p.invoice_title"
-                              class="mt-3 border-t border-gray-700 pt-3 text-xs text-violet-300"
+                              class="mt-3 border-t border-gray-700 pt-3 text-xs text-brand-300"
                             >
                               В CRM: {{ p.invoice_title }}
                             </div>
@@ -2324,7 +2324,7 @@ onBeforeUnmount(() => {
                     <template v-if="p.payment_source === 'acquiring' && p.counterparty_contact_id">
                       <button
                         type="button"
-                        class="text-left text-violet-700 hover:underline break-words"
+                        class="text-left text-brand-700 hover:underline break-words"
                         @click="openContact(p.counterparty_contact_id)"
                       >
                         {{ p.counterparty_name || '—' }}
@@ -2334,7 +2334,7 @@ onBeforeUnmount(() => {
                     <template v-else-if="p.counterparty_company_id">
                       <button
                         type="button"
-                        class="text-left text-violet-700 hover:underline break-words"
+                        class="text-left text-brand-700 hover:underline break-words"
                         @click="openCompany(p.counterparty_company_id)"
                       >
                         {{ p.counterparty_name || '—' }}
@@ -2343,7 +2343,7 @@ onBeforeUnmount(() => {
                     <template v-else-if="p.counterparty_contact_id">
                       <button
                         type="button"
-                        class="text-left text-violet-700 hover:underline break-words"
+                        class="text-left text-brand-700 hover:underline break-words"
                         @click="openContact(p.counterparty_contact_id)"
                       >
                         {{ p.counterparty_name || '—' }}
@@ -2354,7 +2354,7 @@ onBeforeUnmount(() => {
                       <button
                         v-if="canCreateCounterpartyFromPayment(p)"
                         type="button"
-                        class="inline-flex w-fit items-center gap-1 rounded-md border border-violet-200 bg-violet-50 px-2 py-0.5 text-[11px] font-medium text-violet-700 hover:bg-violet-100 disabled:opacity-50"
+                        class="inline-flex w-fit items-center gap-1 rounded-md border border-brand-200 bg-brand-50 px-2 py-0.5 text-[11px] font-medium text-brand-700 hover:bg-brand-100 disabled:opacity-50"
                         :disabled="creatingCounterpartyPaymentId === p.id"
                         @click="createCounterpartyFromPayment(p)"
                       >
@@ -2368,7 +2368,7 @@ onBeforeUnmount(() => {
                     <template v-if="p.payment_source !== 'acquiring' && p.counterparty_company_id && p.counterparty_inn">
                       <button
                         type="button"
-                        class="hover:text-violet-700 hover:underline"
+                        class="hover:text-brand-700 hover:underline"
                         @click="openCompany(p.counterparty_company_id)"
                       >
                         {{ p.counterparty_inn }}
@@ -2389,7 +2389,7 @@ onBeforeUnmount(() => {
                           <span v-if="p.deal_responsible_photo" class="w-7 h-7 rounded-full overflow-hidden flex-shrink-0 border border-gray-200">
                             <img :src="p.deal_responsible_photo" class="w-full h-full object-cover" />
                           </span>
-                          <span v-else class="w-7 h-7 rounded-full bg-violet-500 flex items-center justify-center text-xs text-white flex-shrink-0">
+                          <span v-else class="w-7 h-7 rounded-full bg-brand-500 flex items-center justify-center text-xs text-white flex-shrink-0">
                             {{ (p.deal_responsible_name || '?')[0] }}
                           </span>
                           <!-- Deal info -->
@@ -2439,7 +2439,7 @@ onBeforeUnmount(() => {
                         >
                           <button
                             type="button"
-                            class="inline-flex items-center gap-1 px-2.5 py-1 border border-gray-300 hover:border-violet-400 hover:bg-violet-50 text-gray-700 text-xs font-medium rounded-md transition-colors whitespace-nowrap"
+                            class="inline-flex items-center gap-1 px-2.5 py-1 border border-gray-300 hover:border-brand-400 hover:bg-brand-50 text-gray-700 text-xs font-medium rounded-md transition-colors whitespace-nowrap"
                             @click.stop="toggleAcquiringMenu(p.id)"
                           >
                             Действия
@@ -2481,7 +2481,7 @@ onBeforeUnmount(() => {
                       <template v-else-if="!p.matched_deal_id && !p.matched_invoice_id && p.status !== 'ignored'">
                         <div class="relative">
                           <button
-                            class="inline-flex items-center gap-1 px-2.5 py-1 bg-violet-500 hover:bg-violet-600 text-white text-xs font-medium rounded-md transition-colors whitespace-nowrap"
+                            class="inline-flex items-center gap-1 px-2.5 py-1 bg-brand-500 hover:bg-brand-600 text-white text-xs font-medium rounded-md transition-colors whitespace-nowrap"
                             @click.stop="togglePaymentMenu(p.id)"
                           >
                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
@@ -2597,7 +2597,7 @@ onBeforeUnmount(() => {
                 <input
                   v-model="syncDate"
                   type="date"
-                  class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
+                  class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
                 />
               </div>
               <div>
@@ -2605,13 +2605,13 @@ onBeforeUnmount(() => {
                 <input
                   v-model="syncDateEnd"
                   type="date"
-                  class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
+                  class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
                 />
               </div>
             </div>
             <div class="flex items-center gap-3 mt-6">
               <button
-                class="px-5 py-2.5 bg-violet-500 hover:bg-violet-600 text-white text-sm font-medium rounded-xl transition-colors disabled:opacity-50"
+                class="px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-xl transition-colors disabled:opacity-50"
                 :disabled="isManualSyncing"
                 @click="submitStatementPeriodSync"
               >
@@ -2709,7 +2709,7 @@ onBeforeUnmount(() => {
                   v-model="dealSearchQuery"
                   type="text"
                   placeholder="Введите название сделки..."
-                  class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
+                  class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
                   @input="searchDeals"
                 />
                 <svg v-if="isSearchingDeals" class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" /><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
@@ -2731,12 +2731,12 @@ onBeforeUnmount(() => {
             </div>
             
             <!-- Selected deal preview -->
-            <div v-if="selectedDeal" class="p-4 bg-violet-50 border border-violet-200 rounded-xl mb-5 flex items-center justify-between">
+            <div v-if="selectedDeal" class="p-4 bg-brand-50 border border-brand-200 rounded-xl mb-5 flex items-center justify-between">
               <div>
-                <div class="text-sm font-medium text-violet-800">{{ selectedDeal.TITLE }}</div>
-                <div class="text-xs text-violet-600 mt-0.5">ID: {{ selectedDeal.ID }} · Сумма: {{ selectedDeal.OPPORTUNITY }} {{ selectedDeal.CURRENCY_ID }}</div>
+                <div class="text-sm font-medium text-brand-800">{{ selectedDeal.TITLE }}</div>
+                <div class="text-xs text-brand-600 mt-0.5">ID: {{ selectedDeal.ID }} · Сумма: {{ selectedDeal.OPPORTUNITY }} {{ selectedDeal.CURRENCY_ID }}</div>
               </div>
-              <button class="text-violet-400 hover:text-violet-600" @click="selectedDeal = null">&times;</button>
+              <button class="text-brand-400 hover:text-brand-600" @click="selectedDeal = null">&times;</button>
             </div>
             
             <div class="flex items-center gap-3">
@@ -2747,7 +2747,7 @@ onBeforeUnmount(() => {
                 Отмена
               </button>
               <button
-                class="px-5 py-2.5 bg-violet-500 hover:bg-violet-600 text-white text-sm font-medium rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                class="px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 :disabled="!selectedDeal"
                 @click="bindPaymentToDeal"
               >
@@ -2844,7 +2844,7 @@ onBeforeUnmount(() => {
               Обновить
             </button>
             <button
-              class="px-4 py-2 bg-violet-500 hover:bg-violet-600 text-white text-sm font-medium rounded-lg transition-colors"
+              class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-lg transition-colors"
               @click="showAddAccountModal = true"
             >
               Добавить счёт
@@ -2853,7 +2853,7 @@ onBeforeUnmount(() => {
         </div>
 
         <div v-if="isLoadingData" class="flex items-center justify-center py-12">
-          <div class="animate-spin w-6 h-6 border-3 border-violet-500 border-t-transparent rounded-full" />
+          <div class="animate-spin w-6 h-6 border-3 border-brand-500 border-t-transparent rounded-full" />
         </div>
 
         <!-- Таблица счетов -->
@@ -2943,8 +2943,8 @@ onBeforeUnmount(() => {
             <p class="text-gray-400 text-sm text-center py-8">Нет доступных счетов</p>
             <hr class="my-4 border-gray-100" />
             <div class="flex items-center gap-3">
-              <button class="px-4 py-2 border border-violet-300 text-violet-600 text-sm font-medium rounded-xl hover:bg-violet-50 transition-colors" @click="showAddAccountModal = false">Отмена</button>
-              <button class="px-4 py-2 bg-violet-400 text-white text-sm font-medium rounded-xl opacity-50 cursor-not-allowed">Добавить выбранные</button>
+              <button class="px-4 py-2 border border-brand-300 text-brand-600 text-sm font-medium rounded-xl hover:bg-brand-50 transition-colors" @click="showAddAccountModal = false">Отмена</button>
+              <button class="px-4 py-2 bg-brand-400 text-white text-sm font-medium rounded-xl opacity-50 cursor-not-allowed">Добавить выбранные</button>
             </div>
           </div>
         </div>
@@ -2959,7 +2959,7 @@ onBeforeUnmount(() => {
             <div class="space-y-4">
               <div>
                 <label class="block text-sm text-gray-700 mb-1">Название организации <span class="text-red-500">*</span></label>
-                <input v-model="editingAccount.organizationName" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400" />
+                <input v-model="editingAccount.organizationName" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400" />
               </div>
               <div>
                 <label class="block text-sm text-gray-700 mb-1">Номер счёта без БИК</label>
@@ -2972,26 +2972,26 @@ onBeforeUnmount(() => {
               </div>
               <div>
                 <label class="block text-sm text-gray-700 mb-1">Префикс номера счёта</label>
-                <input v-model="editingAccount.prefix" type="text" placeholder="И, СЧ-, или пусто" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400" />
+                <input v-model="editingAccount.prefix" type="text" placeholder="И, СЧ-, или пусто" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400" />
                 <p class="text-xs text-gray-400 mt-1">Префикс перед номером счёта в сделке, например «СЧ-» для «СЧ-315».</p>
               </div>
               <div>
                 <label class="block text-sm text-gray-700 mb-1">Суффикс номера счёта</label>
-                <input v-model="editingAccount.suffix" type="text" placeholder="-А, /2025, или пусто" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400" />
+                <input v-model="editingAccount.suffix" type="text" placeholder="-А, /2025, или пусто" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400" />
                 <p class="text-xs text-gray-400 mt-1">Суффикс после номера счёта в сделке, например «-А» для «315-А».</p>
               </div>
               <div>
                 <label class="block text-sm text-gray-700 mb-1">Статус</label>
                 <label class="flex items-center gap-2 cursor-pointer">
-                  <input v-model="editingAccount.active" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400" />
+                  <input v-model="editingAccount.active" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400" />
                   <span class="text-sm text-gray-600">Счёт активен</span>
                 </label>
               </div>
             </div>
             <hr class="my-5 border-gray-100" />
             <div class="flex items-center gap-3">
-              <button class="px-4 py-2 border border-violet-300 text-violet-600 text-sm font-medium rounded-xl hover:bg-violet-50 transition-colors" @click="closeEditAccount">Отмена</button>
-              <button class="px-4 py-2 bg-violet-500 hover:bg-violet-600 text-white text-sm font-medium rounded-xl transition-colors" @click="saveEditAccount">Сохранить</button>
+              <button class="px-4 py-2 border border-brand-300 text-brand-600 text-sm font-medium rounded-xl hover:bg-brand-50 transition-colors" @click="closeEditAccount">Отмена</button>
+              <button class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-xl transition-colors" @click="saveEditAccount">Сохранить</button>
             </div>
           </div>
         </div>
@@ -3002,7 +3002,7 @@ onBeforeUnmount(() => {
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-2 mb-4 w-full min-w-0">
           <h2 class="text-lg font-bold text-gray-900 shrink-0">Настройки интеграции</h2>
           <button
-            class="px-5 py-2 bg-violet-500 hover:bg-violet-600 text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap shrink-0 self-start sm:self-auto disabled:opacity-50"
+            class="px-5 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap shrink-0 self-start sm:self-auto disabled:opacity-50"
             :disabled="isSavingSettings"
             @click="saveSettings"
           >
@@ -3078,7 +3078,7 @@ onBeforeUnmount(() => {
             <div class="space-y-3">
               <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Поиск сделки</h4>
               <label class="flex items-start gap-3 cursor-pointer">
-                <input v-model="dealMatching.enabled" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0" />
+                <input v-model="dealMatching.enabled" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0" />
                 <span class="min-w-0">
                   <span class="text-sm text-gray-900 font-medium">Автоматический поиск сделок</span>
                   <span class="block text-xs text-gray-500 mt-0.5">Платежи из банка автоматически привязываются к сделкам в CRM</span>
@@ -3089,13 +3089,13 @@ onBeforeUnmount(() => {
                 <div v-if="isLoadingDealUf" class="text-sm text-gray-400">{{ t('dashboard.loading_uf') }}</div>
 
                 <label class="flex items-start gap-3 cursor-pointer">
-                  <input v-model="dealMatching.autoFindEach" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0" />
+                  <input v-model="dealMatching.autoFindEach" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0" />
                   <span class="text-sm text-gray-800 font-medium">Автоматически находить сделку для каждого платежа</span>
                 </label>
 
                 <div class="space-y-3">
                   <label class="flex items-start gap-3 cursor-pointer">
-                    <input v-model="dealMatching.byInvoiceInPurpose" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0" />
+                    <input v-model="dealMatching.byInvoiceInPurpose" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0" />
                     <span class="text-sm text-gray-700 flex flex-wrap items-center gap-2">
                       Искать по номеру счёта в назначении платежа
                       <span class="inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide bg-emerald-100 text-emerald-800">Рекомендуется</span>
@@ -3116,7 +3116,7 @@ onBeforeUnmount(() => {
                           <input
                             v-model="ufMatchInvoiceSearch"
                             type="text"
-                            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 bg-white"
+                            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 bg-white"
                             placeholder="Выберите поле сделки"
                             @focus="showMatchInvoiceDropdown = true"
                             @blur="closeMatchInvoiceDropdown"
@@ -3129,7 +3129,7 @@ onBeforeUnmount(() => {
                               v-for="f in filteredMatchInvoiceFields"
                               :key="f.code"
                               type="button"
-                              class="w-full text-left px-3 py-2 text-sm hover:bg-violet-50 border-b border-gray-100 last:border-b-0"
+                              class="w-full text-left px-3 py-2 text-sm hover:bg-brand-50 border-b border-gray-100 last:border-b-0"
                               @mousedown.prevent="selectMatchInvoiceField(f)"
                             >
                               <div class="font-medium text-gray-800">{{ f.label }}</div>
@@ -3139,7 +3139,7 @@ onBeforeUnmount(() => {
                         </div>
                         <button
                           type="button"
-                          class="shrink-0 px-3 py-2 text-sm font-medium text-violet-600 border border-violet-300 rounded-lg hover:bg-violet-50 disabled:opacity-50"
+                          class="shrink-0 px-3 py-2 text-sm font-medium text-brand-600 border border-brand-300 rounded-lg hover:bg-brand-50 disabled:opacity-50"
                           :disabled="isCreatingMatchInvoiceUf"
                           @click="createDealMatchInvoiceUf"
                         >
@@ -3152,7 +3152,7 @@ onBeforeUnmount(() => {
                 </div>
 
             <label class="flex items-start gap-3 cursor-pointer">
-              <input v-model="dealMatching.byInn" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0" />
+              <input v-model="dealMatching.byInn" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0" />
               <span class="text-sm text-gray-600">Сопоставлять по ИНН контрагента</span>
             </label>
             <div v-if="dealMatching.byInn" class="pl-0 sm:pl-7 space-y-1.5">
@@ -3170,7 +3170,7 @@ onBeforeUnmount(() => {
                     <input
                       v-model="ufMatchInnSearch"
                       type="text"
-                      class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 bg-white"
+                      class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 bg-white"
                       placeholder="Выберите поле сделки"
                       @focus="showMatchInnDropdown = true"
                       @blur="closeMatchInnDropdown"
@@ -3183,7 +3183,7 @@ onBeforeUnmount(() => {
                         v-for="f in filteredMatchInnFields"
                         :key="f.code"
                         type="button"
-                        class="w-full text-left px-3 py-2 text-sm hover:bg-violet-50 border-b border-gray-100 last:border-b-0"
+                        class="w-full text-left px-3 py-2 text-sm hover:bg-brand-50 border-b border-gray-100 last:border-b-0"
                         @mousedown.prevent="selectMatchInnField(f)"
                       >
                         <div class="font-medium text-gray-800">{{ f.label }}</div>
@@ -3193,7 +3193,7 @@ onBeforeUnmount(() => {
                   </div>
                   <button
                     type="button"
-                    class="shrink-0 px-3 py-2 text-sm font-medium text-violet-600 border border-violet-300 rounded-lg hover:bg-violet-50 disabled:opacity-50"
+                    class="shrink-0 px-3 py-2 text-sm font-medium text-brand-600 border border-brand-300 rounded-lg hover:bg-brand-50 disabled:opacity-50"
                     :disabled="isCreatingMatchInnUf"
                     @click="createDealMatchInnUf"
                   >
@@ -3205,7 +3205,7 @@ onBeforeUnmount(() => {
             </div>
 
             <label class="flex items-start gap-3 cursor-pointer">
-              <input v-model="dealMatching.byName" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0" />
+              <input v-model="dealMatching.byName" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0" />
               <span class="text-sm text-gray-600">Сопоставлять по названию контрагента</span>
             </label>
             <div v-if="dealMatching.byName" class="pl-0 sm:pl-7 space-y-1.5">
@@ -3223,7 +3223,7 @@ onBeforeUnmount(() => {
                     <input
                       v-model="ufMatchNameSearch"
                       type="text"
-                      class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 bg-white"
+                      class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 bg-white"
                       placeholder="Выберите поле сделки"
                       @focus="showMatchNameDropdown = true"
                       @blur="closeMatchNameDropdown"
@@ -3236,7 +3236,7 @@ onBeforeUnmount(() => {
                         v-for="f in filteredMatchNameFields"
                         :key="f.code"
                         type="button"
-                        class="w-full text-left px-3 py-2 text-sm hover:bg-violet-50 border-b border-gray-100 last:border-b-0"
+                        class="w-full text-left px-3 py-2 text-sm hover:bg-brand-50 border-b border-gray-100 last:border-b-0"
                         @mousedown.prevent="selectMatchNameField(f)"
                       >
                         <div class="font-medium text-gray-800">{{ f.label }}</div>
@@ -3246,7 +3246,7 @@ onBeforeUnmount(() => {
                   </div>
                   <button
                     type="button"
-                    class="shrink-0 px-3 py-2 text-sm font-medium text-violet-600 border border-violet-300 rounded-lg hover:bg-violet-50 disabled:opacity-50"
+                    class="shrink-0 px-3 py-2 text-sm font-medium text-brand-600 border border-brand-300 rounded-lg hover:bg-brand-50 disabled:opacity-50"
                     :disabled="isCreatingMatchNameUf"
                     @click="createDealMatchNameUf"
                   >
@@ -3258,7 +3258,7 @@ onBeforeUnmount(() => {
             </div>
 
                 <label class="flex items-start gap-3 cursor-pointer">
-                  <input v-model="dealMatching.byAmount" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0" />
+                  <input v-model="dealMatching.byAmount" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0" />
                   <span class="min-w-0">
                     <span class="text-sm text-gray-700 flex flex-wrap items-center gap-2">
                       Проверять совпадение суммы
@@ -3270,7 +3270,7 @@ onBeforeUnmount(() => {
 
                 <div class="space-y-2">
                   <label class="flex items-start gap-3 cursor-pointer">
-                    <input v-model="dealMatching.byPhonePayer" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0" />
+                    <input v-model="dealMatching.byPhonePayer" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0" />
                     <span class="min-w-0">
                       <span class="text-sm text-gray-700 flex flex-wrap items-center gap-2">
                         Искать по телефону плательщика
@@ -3295,7 +3295,7 @@ onBeforeUnmount(() => {
                           <input
                             v-model="ufMatchPhoneSearch"
                             type="text"
-                            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 bg-white"
+                            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 bg-white"
                             placeholder="Выберите поле сделки"
                             @focus="showMatchPhoneDropdown = true"
                             @blur="closeMatchPhoneDropdown"
@@ -3308,7 +3308,7 @@ onBeforeUnmount(() => {
                               v-for="f in filteredMatchPhoneFields"
                               :key="f.code"
                               type="button"
-                              class="w-full text-left px-3 py-2 text-sm hover:bg-violet-50 border-b border-gray-100 last:border-b-0"
+                              class="w-full text-left px-3 py-2 text-sm hover:bg-brand-50 border-b border-gray-100 last:border-b-0"
                               @mousedown.prevent="selectMatchPhoneField(f)"
                             >
                               <div class="font-medium text-gray-800">{{ f.label }}</div>
@@ -3318,7 +3318,7 @@ onBeforeUnmount(() => {
                         </div>
                         <button
                           type="button"
-                          class="shrink-0 px-3 py-2 text-sm font-medium text-violet-600 border border-violet-300 rounded-lg hover:bg-violet-50 disabled:opacity-50"
+                          class="shrink-0 px-3 py-2 text-sm font-medium text-brand-600 border border-brand-300 rounded-lg hover:bg-brand-50 disabled:opacity-50"
                           :disabled="isCreatingMatchPhoneUf"
                           @click="createDealMatchPhoneUf"
                         >
@@ -3336,7 +3336,7 @@ onBeforeUnmount(() => {
             <div v-if="dealMatching.enabled" class="space-y-3 border-t border-gray-200 pt-4">
               <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Автоматическое применение</h4>
               <label class="flex items-start gap-3 cursor-pointer">
-                <input v-model="dealMatching.autoWrite" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0" />
+                <input v-model="dealMatching.autoWrite" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0" />
                 <span class="min-w-0">
                   <span class="text-sm text-gray-900 font-medium">Автоматически привязывать платежи к сделкам</span>
                   <span class="block text-xs text-gray-500 mt-0.5">Без ручного подтверждения — данные платежа сразу попадают в найденную сделку</span>
@@ -3344,7 +3344,7 @@ onBeforeUnmount(() => {
               </label>
 
               <label class="flex items-start gap-3 cursor-pointer">
-                <input v-model="dealMatching.partial" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0" />
+                <input v-model="dealMatching.partial" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0" />
                 <span class="text-sm text-gray-600">Обрабатывать частичные платежи и переплаты</span>
               </label>
             </div>
@@ -3364,7 +3364,7 @@ onBeforeUnmount(() => {
 
             <div class="space-y-3">
               <label class="flex items-center gap-3 cursor-pointer w-full min-w-0">
-                <input v-model="autoUpdateInvoiceStatus" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 shrink-0" />
+                <input v-model="autoUpdateInvoiceStatus" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 shrink-0" />
                 <span class="text-sm text-gray-800 font-medium">Автоматически обновлять статус счёта</span>
               </label>
 
@@ -3393,11 +3393,11 @@ onBeforeUnmount(() => {
             <div class="space-y-2 border-t border-gray-200 pt-4">
               <p class="text-sm text-gray-800 font-medium">Поиск счёта по платежу</p>
               <label class="flex items-start gap-3 cursor-pointer">
-                <input v-model="invoiceMatchByAmount" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0" />
+                <input v-model="invoiceMatchByAmount" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0" />
                 <span class="text-sm text-gray-600">Сопоставлять по сумме счёта</span>
               </label>
               <label class="flex items-start gap-3 cursor-pointer">
-                <input v-model="invoiceMatchByInn" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0" />
+                <input v-model="invoiceMatchByInn" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0" />
                 <span class="text-sm text-gray-600">Фильтровать по ИНН из реквизитов компании</span>
               </label>
             </div>
@@ -3461,7 +3461,7 @@ onBeforeUnmount(() => {
                     <td class="py-3 px-3 text-gray-800 font-medium align-top">
                       <span class="block">Частичная оплата</span>
                       <label class="mt-2 flex items-center gap-2 cursor-pointer font-normal">
-                        <input v-model="dealMatching.moveOnPartial" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 shrink-0" />
+                        <input v-model="dealMatching.moveOnPartial" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 shrink-0" />
                         <span class="text-xs text-gray-500">Перемещать при частичной оплате</span>
                       </label>
                     </td>
@@ -3504,12 +3504,12 @@ onBeforeUnmount(() => {
             </div>
 
             <label v-if="!dealMatching.perCategoryEnabled" class="flex items-start gap-3 cursor-pointer">
-              <input v-model="dealMatching.allowBackwardMove" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0" />
+              <input v-model="dealMatching.allowBackwardMove" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0" />
               <span class="text-sm text-gray-600">Разрешить перемещение на более раннюю стадию</span>
             </label>
 
             <label class="flex items-start gap-3 cursor-pointer">
-              <input v-model="dealMatching.perCategoryEnabled" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0" />
+              <input v-model="dealMatching.perCategoryEnabled" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0" />
               <span class="min-w-0">
                 <span class="text-sm text-gray-900 font-medium">Настроить отдельно по каждой воронке</span>
                 <span class="block text-xs text-gray-500 mt-0.5">Разные стадии для основной воронки, дополнительных направлений и т.д.</span>
@@ -3571,7 +3571,7 @@ onBeforeUnmount(() => {
                       <td class="py-2.5 pr-3 text-gray-800">
                         <span class="block">Частичная оплата</span>
                         <label class="mt-1.5 flex items-center gap-2 cursor-pointer">
-                          <input v-model="rule.moveOnPartial" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 shrink-0" />
+                          <input v-model="rule.moveOnPartial" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 shrink-0" />
                           <span class="text-xs text-gray-500">Перемещать</span>
                         </label>
                       </td>
@@ -3587,7 +3587,7 @@ onBeforeUnmount(() => {
                 </table>
 
                 <label class="flex items-start gap-3 cursor-pointer">
-                  <input v-model="rule.allowBackwardMove" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0" />
+                  <input v-model="rule.allowBackwardMove" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0" />
                   <span class="text-xs text-gray-600">Разрешить перемещение на более раннюю стадию</span>
                 </label>
               </div>
@@ -3595,7 +3595,7 @@ onBeforeUnmount(() => {
               <button
                 v-if="canAddCategoryStageRule && dealMatching.categoryRules.length > 0"
                 type="button"
-                class="inline-flex items-center gap-1.5 text-sm font-medium text-violet-600 hover:text-violet-700 transition-colors"
+                class="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-700 transition-colors"
                 @click="addCategoryStageRule"
               >
                 <span class="text-lg leading-none">+</span>
@@ -3609,7 +3609,7 @@ onBeforeUnmount(() => {
               <button
                 v-else-if="dealMatching.categoryRules.length === 0"
                 type="button"
-                class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-violet-600 border border-violet-300 rounded-lg hover:bg-violet-50 transition-colors"
+                class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-brand-600 border border-brand-300 rounded-lg hover:bg-brand-50 transition-colors"
                 @click="addCategoryStageRule"
               >
                 <span class="text-lg leading-none">+</span>
@@ -3652,7 +3652,7 @@ onBeforeUnmount(() => {
               </h3>
               <button
                 type="button"
-                class="shrink-0 px-3 py-1.5 text-xs font-medium text-violet-700 border border-violet-300 rounded-lg hover:bg-violet-50 disabled:opacity-50"
+                class="shrink-0 px-3 py-1.5 text-xs font-medium text-brand-700 border border-brand-300 rounded-lg hover:bg-brand-50 disabled:opacity-50"
                 :disabled="acquiringStatusLoading"
                 @click="loadAcquiringStatus"
               >
@@ -3764,7 +3764,7 @@ onBeforeUnmount(() => {
                   <input
                     v-model="ufKindSearch"
                     type="text"
-                    class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 bg-white"
+                    class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 bg-white"
                     :placeholder="t('dashboard.uf_search_placeholder')"
                     @focus="showKindDropdown = true"
                     @blur="closeKindDropdown"
@@ -3777,7 +3777,7 @@ onBeforeUnmount(() => {
                       v-for="f in filteredKindFields"
                       :key="f.code"
                       type="button"
-                      class="w-full text-left px-3 py-2 text-sm hover:bg-violet-50 border-b border-gray-100 last:border-b-0"
+                      class="w-full text-left px-3 py-2 text-sm hover:bg-brand-50 border-b border-gray-100 last:border-b-0"
                       @mousedown.prevent="selectKindField(f)"
                     >
                       <div class="font-medium text-gray-800">{{ f.label }}</div>
@@ -3787,7 +3787,7 @@ onBeforeUnmount(() => {
                 </div>
                 <button
                   type="button"
-                  class="shrink-0 px-3 py-2.5 text-sm font-medium text-violet-600 border border-violet-300 rounded-lg hover:bg-violet-50 disabled:opacity-50"
+                  class="shrink-0 px-3 py-2.5 text-sm font-medium text-brand-600 border border-brand-300 rounded-lg hover:bg-brand-50 disabled:opacity-50"
                   :disabled="isCreatingKindUf"
                   @click="createPaymentKindUf"
                 >
@@ -3811,7 +3811,7 @@ onBeforeUnmount(() => {
                   <input
                     v-model="ufChannelSearch"
                     type="text"
-                    class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 bg-white"
+                    class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 bg-white"
                     :placeholder="t('dashboard.uf_search_placeholder')"
                     @focus="showChannelDropdown = true"
                     @blur="closeChannelDropdown"
@@ -3824,7 +3824,7 @@ onBeforeUnmount(() => {
                       v-for="f in filteredChannelFields"
                       :key="f.code"
                       type="button"
-                      class="w-full text-left px-3 py-2 text-sm hover:bg-violet-50 border-b border-gray-100 last:border-b-0"
+                      class="w-full text-left px-3 py-2 text-sm hover:bg-brand-50 border-b border-gray-100 last:border-b-0"
                       @mousedown.prevent="selectChannelField(f)"
                     >
                       <div class="font-medium text-gray-800">{{ f.label }}</div>
@@ -3834,7 +3834,7 @@ onBeforeUnmount(() => {
                 </div>
                 <button
                   type="button"
-                  class="shrink-0 px-3 py-2.5 text-sm font-medium text-violet-600 border border-violet-300 rounded-lg hover:bg-violet-50 disabled:opacity-50"
+                  class="shrink-0 px-3 py-2.5 text-sm font-medium text-brand-600 border border-brand-300 rounded-lg hover:bg-brand-50 disabled:opacity-50"
                   :disabled="isCreatingChannelUf"
                   @click="createPaymentChannelUf"
                 >
@@ -3852,7 +3852,7 @@ onBeforeUnmount(() => {
 
         <!-- Синхронизация (вкладка после «Поля») -->
         <div v-else-if="settingsSubTab === 'sync'" class="w-full min-w-0 space-y-6">
-          <div class="w-full min-w-0 rounded-2xl border border-violet-200 bg-violet-50/50 p-6 sm:p-8 space-y-5">
+          <div class="w-full min-w-0 rounded-2xl border border-brand-200 bg-brand-50/50 p-6 sm:p-8 space-y-5">
             <div class="w-full min-w-0">
               <h3 class="text-lg font-bold text-gray-900">Синхронизация</h3>
               <p class="text-sm text-gray-700 mt-3 leading-relaxed">
@@ -3870,7 +3870,7 @@ onBeforeUnmount(() => {
               </p>
             </div>
             <label class="flex items-start gap-3 cursor-pointer w-full min-w-0">
-              <input v-model="syncPrefEnabled" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-1 shrink-0" />
+              <input v-model="syncPrefEnabled" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-1 shrink-0" />
               <span class="text-sm text-gray-900 font-medium leading-snug min-w-0">Включить фоновую синхронизацию</span>
             </label>
             <div class="w-full min-w-0">
@@ -3884,7 +3884,7 @@ onBeforeUnmount(() => {
                 type="number"
                 min="3"
                 max="180"
-                class="block w-full sm:w-48 max-w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 bg-white"
+                class="block w-full sm:w-48 max-w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 bg-white"
               />
             </div>
           </div>
@@ -3896,7 +3896,7 @@ onBeforeUnmount(() => {
             <input
               v-model="notifyDealResponsible"
               type="checkbox"
-              class="w-5 h-5 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0"
+              class="w-5 h-5 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0"
             />
             <div class="min-w-0">
               <span class="block text-sm text-gray-900 font-medium">Уведомление ответственному за сделку</span>
@@ -3909,7 +3909,7 @@ onBeforeUnmount(() => {
             <input
               v-model="notifyDealTimeline"
               type="checkbox"
-              class="w-5 h-5 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0"
+              class="w-5 h-5 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0"
             />
             <div class="min-w-0">
               <span class="block text-sm text-gray-900 font-medium">Комментарий в таймлайн сделки</span>
@@ -3925,7 +3925,7 @@ onBeforeUnmount(() => {
               <input
                 v-model="notifyChatEnabled"
                 type="checkbox"
-                class="w-5 h-5 rounded border-gray-300 text-violet-500 focus:ring-violet-400 mt-0.5 shrink-0"
+                class="w-5 h-5 rounded border-gray-300 text-brand-500 focus:ring-brand-400 mt-0.5 shrink-0"
               />
               <div class="min-w-0">
                 <span class="block text-sm text-gray-900 font-medium">Чат для уведомлений</span>
@@ -3940,7 +3940,7 @@ onBeforeUnmount(() => {
                   <span class="text-sm text-amber-700">{{ chatLoadError }}</span>
                   <button
                     type="button"
-                    class="shrink-0 text-sm font-medium text-violet-600 hover:text-violet-700 underline"
+                    class="shrink-0 text-sm font-medium text-brand-600 hover:text-brand-700 underline"
                     @click="loadAvailableChats"
                   >
                     Повторить
@@ -3949,7 +3949,7 @@ onBeforeUnmount(() => {
                 <div v-if="availableChats.length > 0" class="relative" style="max-width: 360px;">
                   <select
                     v-model.number="notifyChatId"
-                    class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-violet-400 bg-white"
+                    class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-brand-400 bg-white"
                   >
                     <option :value="null" disabled>Выберите чат</option>
                     <option v-for="chat in availableChats" :key="chat.id" :value="chat.id">
@@ -3962,7 +3962,7 @@ onBeforeUnmount(() => {
                 </div>
                 <button
                   type="button"
-                  class="px-4 py-2.5 text-sm font-medium text-white bg-violet-500 hover:bg-violet-600 rounded-lg transition-colors disabled:opacity-50"
+                  class="px-4 py-2.5 text-sm font-medium text-white bg-brand-500 hover:bg-brand-600 rounded-lg transition-colors disabled:opacity-50"
                   :disabled="isCreatingChat"
                   @click="createNotificationChat"
                 >

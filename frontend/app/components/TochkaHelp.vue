@@ -164,7 +164,7 @@ function followStep(step: (typeof firstSteps)[number]) {
     <!-- Поиск по руководству -->
     <div class="flex items-center gap-6 rounded-2xl bg-gray-50 px-6 py-6">
       <div class="min-w-0 flex-1">
-        <div class="text-xs font-semibold text-violet-600">
+        <div class="text-xs font-semibold text-brand-600">
           Модульбанк. Интеграция · центр помощи
         </div>
         <h3 class="mt-2 text-2xl font-semibold">
@@ -183,12 +183,12 @@ function followStep(step: (typeof firstSteps)[number]) {
       <div class="relative hidden size-28 shrink-0 md:block" aria-hidden="true">
         <div class="absolute inset-0 rotate-6 rounded-2xl bg-white shadow-sm" />
         <div class="absolute inset-0 flex items-center justify-center rounded-2xl bg-white shadow-sm">
-          <svg viewBox="0 0 24 24" class="size-12 text-violet-500" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" class="size-12 text-brand-500" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
             <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
           </svg>
         </div>
-        <div class="absolute -bottom-2 -right-2 flex size-10 items-center justify-center rounded-full bg-violet-500 text-white shadow-md">
+        <div class="absolute -bottom-2 -right-2 flex size-10 items-center justify-center rounded-full bg-brand-500 text-white shadow-md">
           <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" />
             <path d="M12 17h.01" />
@@ -207,7 +207,7 @@ function followStep(step: (typeof firstSteps)[number]) {
         class="group rounded-2xl bg-gray-50 px-6 py-5 transition-colors hover:bg-gray-100"
       >
         <div class="flex items-start justify-between gap-3">
-          <div class="flex size-10 items-center justify-center rounded-xl bg-white text-violet-500">
+          <div class="flex size-10 items-center justify-center rounded-xl bg-white text-brand-500">
             <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z" />
             </svg>
@@ -296,7 +296,7 @@ function followStep(step: (typeof firstSteps)[number]) {
 
           <div v-if="!visible.length" class="px-5 py-6 text-sm text-gray-500">
             Ничего не нашлось.
-            <button type="button" class="font-semibold text-violet-600 hover:underline" @click="emit('support')">
+            <button type="button" class="font-semibold text-brand-600 hover:underline" @click="emit('support')">
               Напишите в поддержку
             </button>
             — ответим и добавим раздел.
@@ -327,7 +327,7 @@ function followStep(step: (typeof firstSteps)[number]) {
             </p>
             <button
               type="button"
-              class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-violet-600 hover:underline"
+              class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-brand-600 hover:underline"
               @click="followStep(step)"
             >
               {{ step.linkLabel }}

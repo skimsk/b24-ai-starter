@@ -307,7 +307,7 @@ function statusColor(s: string): string {
     pending: 'bg-yellow-50 text-yellow-700',
     matched: 'bg-green-50 text-green-600',
     applied: 'bg-green-50 text-green-700',
-    refunded: 'bg-violet-50 text-violet-800',
+    refunded: 'bg-lime-50 text-lime-800',
     error: 'bg-red-50 text-red-700',
     ignored: 'bg-gray-100 text-gray-500',
   }
@@ -655,7 +655,7 @@ watch(createLinkKind, () => {
 
       <div
         v-if="showCreateLinkModal"
-        class="rounded-xl border border-violet-200 bg-violet-50/60 p-4 space-y-3 shadow-sm"
+        class="rounded-xl border border-brand-200 bg-brand-50/60 p-4 space-y-3 shadow-sm"
       >
         <h3 class="text-sm font-semibold text-gray-900">
           {{ t('placement.crm_entity_payments.create_link_title') }}
@@ -883,11 +883,11 @@ watch(createLinkKind, () => {
               <tr>
                 <td colspan="9" class="py-3 px-2">
                   <div class="flex w-full items-center gap-3">
-                    <div class="min-h-px flex-1 bg-violet-200" />
-                    <span class="shrink-0 text-sm font-medium text-violet-600">
+                    <div class="min-h-px flex-1 bg-brand-200" />
+                    <span class="shrink-0 text-sm font-medium text-brand-600">
                       {{ dateKey === 'unknown' ? '—' : formatDateHeader(`${dateKey}T12:00:00`) }}
                     </span>
-                    <div class="min-h-px flex-1 bg-violet-200" />
+                    <div class="min-h-px flex-1 bg-brand-200" />
                   </div>
                 </td>
               </tr>
@@ -950,7 +950,7 @@ watch(createLinkKind, () => {
                   <template v-if="p.source === 'acquiring' && p.counterparty_contact_id">
                     <button
                       type="button"
-                      class="text-left text-violet-700 hover:underline truncate max-w-full"
+                      class="text-left text-brand-700 hover:underline truncate max-w-full"
                       @click="openContact(p.counterparty_contact_id)"
                     >
                       {{ p.counterparty_name || '—' }}
@@ -959,7 +959,7 @@ watch(createLinkKind, () => {
                   <template v-else-if="p.counterparty_company_id">
                     <button
                       type="button"
-                      class="text-left text-violet-700 hover:underline truncate max-w-full"
+                      class="text-left text-brand-700 hover:underline truncate max-w-full"
                       @click="openCompany(p.counterparty_company_id)"
                     >
                       {{ p.counterparty_name || '—' }}
@@ -968,7 +968,7 @@ watch(createLinkKind, () => {
                   <template v-else-if="p.counterparty_contact_id">
                     <button
                       type="button"
-                      class="text-left text-violet-700 hover:underline truncate max-w-full"
+                      class="text-left text-brand-700 hover:underline truncate max-w-full"
                       @click="openContact(p.counterparty_contact_id)"
                     >
                       {{ p.counterparty_name || '—' }}
@@ -982,7 +982,7 @@ watch(createLinkKind, () => {
                   <template v-if="p.source !== 'acquiring' && p.counterparty_company_id && p.counterparty_inn">
                     <button
                       type="button"
-                      class="hover:text-violet-700 hover:underline"
+                      class="hover:text-brand-700 hover:underline"
                       @click="openCompany(p.counterparty_company_id)"
                     >
                       {{ p.counterparty_inn }}
