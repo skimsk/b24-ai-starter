@@ -393,19 +393,27 @@ async function loadChatsFallback(): Promise<Array<{ id: number; title: string }>
 }
 
 function generateChatAvatar(): string {
+  // Знак Модульбанка (сетка 5×5) на белом фоне — как ModulbankMark.vue.
+  const grid = [
+    ['#5acef6', null, '#02245d', '#5acef6', null],
+    ['#d0d501', '#5eb900', null, '#0299e5', '#5eb900'],
+    [null, '#5acef6', '#d0d501', null, '#5acef6'],
+    ['#02245d', '#0299e5', null, '#d0d501', null],
+    ['#5acef6', null, '#5eb900', null, '#0299e5'],
+  ]
   const canvas = document.createElement('canvas')
   canvas.width = 200
   canvas.height = 200
   const ctx = canvas.getContext('2d')!
-  ctx.fillStyle = '#7C3AED'
-  ctx.beginPath()
-  ctx.roundRect(0, 0, 200, 200, 40)
-  ctx.fill()
   ctx.fillStyle = '#FFFFFF'
-  ctx.font = 'bold 120px Arial, sans-serif'
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  ctx.fillText('Т', 100, 108)
+  ctx.fillRect(0, 0, 200, 200)
+  const cell = 24
+  const offset = (200 - cell * 5) / 2
+  grid.forEach((row, y) => row.forEach((fill, x) => {
+    if (!fill) return
+    ctx.fillStyle = fill
+    ctx.fillRect(offset + x * cell, offset + y * cell, cell, cell)
+  }))
   return canvas.toDataURL('image/png').replace('data:image/png;base64,', '')
 }
 
@@ -419,7 +427,7 @@ async function createNotificationChat() {
       TYPE: 'CHAT',
       TITLE: NOTIFY_CHAT_TITLE,
       DESCRIPTION: 'Уведомления о входящих платежах из интеграции Точка Банк',
-      COLOR: 'PURPLE',
+      COLOR: 'DARK_BLUE',
       AVATAR: generateChatAvatar(),
       MESSAGE: 'Чат создан для уведомлений об оплатах. Добавьте сюда нужных сотрудников.',
     })
