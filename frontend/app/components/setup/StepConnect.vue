@@ -194,7 +194,7 @@ onUnmounted(() => {
   position: absolute;
   inset: -4px;
   border: 2px solid #e5e7eb;
-  border-top-color: #8b5cf6;
+  border-top-color: var(--mb-accent);
   border-radius: 1.35rem;
   animation: setup-connect-spin 0.8s linear infinite;
   pointer-events: none;
@@ -262,12 +262,12 @@ onUnmounted(() => {
 }
 
 .setup-connect__btn--primary {
-  background: #8b5cf6;
+  background: var(--mb-primary);
   color: #fff;
 }
 
 .setup-connect__btn--primary:hover:not(:disabled) {
-  background: #7c3aed;
+  background: var(--mb-primary-hover);
 }
 
 .setup-connect__btn--primary:disabled {

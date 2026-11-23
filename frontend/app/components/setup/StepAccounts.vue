@@ -267,7 +267,7 @@ function handleNext() {
 .setup-accounts__spinner {
   width: 2rem;
   height: 2rem;
-  border: 4px solid #8b5cf6;
+  border: 4px solid var(--mb-accent);
   border-top-color: transparent;
   border-radius: 9999px;
   animation: setup-accounts-spin 0.8s linear infinite;
@@ -306,8 +306,8 @@ function handleNext() {
 }
 
 .setup-accounts__card--selected {
-  border-color: #8b5cf6;
-  background: rgb(139 92 246 / 0.05);
+  border-color: var(--mb-accent);
+  background: var(--mb-soft);
 }
 
 .setup-accounts__card-row {
@@ -331,8 +331,8 @@ function handleNext() {
 }
 
 .setup-accounts__checkbox--checked {
-  border-color: #8b5cf6;
-  background: #8b5cf6;
+  border-color: var(--mb-primary);
+  background: var(--mb-primary);
 }
 
 .setup-accounts__check-icon {
@@ -456,7 +456,7 @@ function handleNext() {
   font-size: 0.875rem;
   font-weight: 500;
   color: #fff;
-  background: #8b5cf6;
+  background: var(--mb-primary);
   border: none;
   border-radius: 0.75rem;
   cursor: pointer;
@@ -465,7 +465,7 @@ function handleNext() {
 }
 
 .setup-accounts__btn:hover:not(:disabled) {
-  background: #7c3aed;
+  background: var(--mb-primary-hover);
 }
 
 .setup-accounts__btn:disabled {

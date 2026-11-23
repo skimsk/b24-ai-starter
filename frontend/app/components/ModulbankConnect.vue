@@ -133,9 +133,10 @@ function formatBalance(value: number | null, currency: string) {
 .mb-connect__form { display: flex; gap: .5rem; margin-bottom: .75rem; flex-wrap: wrap; }
 .mb-connect__input { flex: 1 1 240px; min-width: 0; padding: .55rem .75rem; border: 1px solid #d1d5db; border-radius: .5rem; font: inherit; }
 .mb-connect__btn { padding: .55rem 1rem; border: 1px solid #d1d5db; border-radius: .5rem; background: #fff; font: inherit; cursor: pointer; }
-.mb-connect__btn--primary { background: #1f2937; border-color: #1f2937; color: #fff; }
+.mb-connect__btn--primary { background: var(--mb-primary); border-color: var(--mb-primary); color: var(--mb-on-primary); }
+.mb-connect__btn--primary:hover:not(:disabled) { background: var(--mb-primary-hover); border-color: var(--mb-primary-hover); }
 .mb-connect__btn:disabled { opacity: .55; cursor: default; }
-.mb-connect__link { background: none; border: 0; padding: 0; color: #2563eb; cursor: pointer; font: inherit; }
+.mb-connect__link { background: none; border: 0; padding: 0; color: var(--mb-accent); cursor: pointer; font: inherit; }
 .mb-connect__badge { margin-left: .5rem; padding: .1rem .45rem; border-radius: .35rem; background: #fef3c7; color: #92400e; font-size: .8rem; }
 .mb-connect__accounts { list-style: none; padding: 0; margin: 0 0 1rem; border: 1px solid #e5e7eb; border-radius: .5rem; }
 .mb-connect__accounts li { display: flex; justify-content: space-between; gap: 1rem; padding: .55rem .75rem; border-top: 1px solid #e5e7eb; }

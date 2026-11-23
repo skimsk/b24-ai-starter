@@ -728,7 +728,7 @@ watch(createLinkKind, () => {
               <span class="text-[11px] text-gray-500 shrink-0">{{ t('placement.crm_entity_payments.create_link_purpose_snippets') }}</span>
               <button
                 type="button"
-                class="inline-flex items-center rounded-full border border-violet-200 bg-white px-2 py-0.5 text-[11px] text-violet-800 hover:bg-violet-50 disabled:opacity-40 disabled:pointer-events-none"
+                class="inline-flex items-center rounded-full border border-[var(--mb-soft-active)] bg-white px-2 py-0.5 text-[11px] text-[var(--mb-primary)] hover:bg-[var(--mb-soft)] disabled:opacity-40 disabled:pointer-events-none"
                 :disabled="!canInsertTitleSnippet"
                 @click="insertSnippetTitle"
               >
@@ -736,14 +736,14 @@ watch(createLinkKind, () => {
               </button>
               <button
                 type="button"
-                class="inline-flex items-center rounded-full border border-violet-200 bg-white px-2 py-0.5 text-[11px] text-violet-800 hover:bg-violet-50"
+                class="inline-flex items-center rounded-full border border-[var(--mb-soft-active)] bg-white px-2 py-0.5 text-[11px] text-[var(--mb-primary)] hover:bg-[var(--mb-soft)]"
                 @click="insertSnippetNo"
               >
                 {{ t('placement.crm_entity_payments.create_link_purpose_snippet_no', { no: entityId }) }}
               </button>
               <button
                 type="button"
-                class="inline-flex items-center rounded-full border border-violet-200 bg-white px-2 py-0.5 text-[11px] text-violet-800 hover:bg-violet-50"
+                class="inline-flex items-center rounded-full border border-[var(--mb-soft-active)] bg-white px-2 py-0.5 text-[11px] text-[var(--mb-primary)] hover:bg-[var(--mb-soft)]"
                 :title="formatPurposeDate(purposeEffectiveDate())"
                 @click="insertSnippetDate"
               >
@@ -751,21 +751,21 @@ watch(createLinkKind, () => {
               </button>
               <button
                 type="button"
-                class="inline-flex items-center rounded-full border border-violet-200 bg-white px-2 py-0.5 text-[11px] tabular-nums text-violet-800 hover:bg-violet-50"
+                class="inline-flex items-center rounded-full border border-[var(--mb-soft-active)] bg-white px-2 py-0.5 text-[11px] tabular-nums text-[var(--mb-primary)] hover:bg-[var(--mb-soft)]"
                 @click="insertPercent(30)"
               >
                 {{ t('placement.crm_entity_payments.create_link_purpose_snippet_pct_30') }}
               </button>
               <button
                 type="button"
-                class="inline-flex items-center rounded-full border border-violet-200 bg-white px-2 py-0.5 text-[11px] tabular-nums text-violet-800 hover:bg-violet-50"
+                class="inline-flex items-center rounded-full border border-[var(--mb-soft-active)] bg-white px-2 py-0.5 text-[11px] tabular-nums text-[var(--mb-primary)] hover:bg-[var(--mb-soft)]"
                 @click="insertPercent(50)"
               >
                 {{ t('placement.crm_entity_payments.create_link_purpose_snippet_pct_50') }}
               </button>
               <button
                 type="button"
-                class="inline-flex items-center rounded-full border border-violet-200 bg-white px-2 py-0.5 text-[11px] tabular-nums text-violet-800 hover:bg-violet-50"
+                class="inline-flex items-center rounded-full border border-[var(--mb-soft-active)] bg-white px-2 py-0.5 text-[11px] tabular-nums text-[var(--mb-primary)] hover:bg-[var(--mb-soft)]"
                 @click="insertPercent(70)"
               >
                 {{ t('placement.crm_entity_payments.create_link_purpose_snippet_pct_70') }}

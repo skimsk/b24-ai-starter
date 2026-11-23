@@ -2622,7 +2622,7 @@ onBeforeUnmount(() => {
                   type="button"
                   color="air-secondary"
                   size="md"
-                  class="[--ui-btn-margin-left:0] ![--ui-btn-background:#f3e8ff] ![--ui-btn-background-hover:#ede9fe] ![--ui-btn-background-active:#e9d5ff] ![--ui-btn-border-color:#f3e8ff] ![--ui-btn-border-color-hover:#ede9fe] ![--ui-btn-border-color-active:#e9d5ff] ![--ui-btn-color:#7c3aed] ![--ui-btn-color-hover:#7c3aed] ![--ui-btn-color-active:#7c3aed]"
+                  class="[--ui-btn-margin-left:0] ![--ui-btn-background:var(--mb-soft)] ![--ui-btn-background-hover:var(--mb-soft-hover)] ![--ui-btn-background-active:var(--mb-soft-active)] ![--ui-btn-border-color:var(--mb-soft)] ![--ui-btn-border-color-hover:var(--mb-soft-hover)] ![--ui-btn-border-color-active:var(--mb-soft-active)] ![--ui-btn-color:var(--mb-primary)] ![--ui-btn-color-hover:var(--mb-primary)] ![--ui-btn-color-active:var(--mb-primary)]"
                   @click="closeUnbindConfirmModal"
                 />
                 <B24Button
@@ -2630,7 +2630,7 @@ onBeforeUnmount(() => {
                   type="button"
                   color="air-ai"
                   size="md"
-                  class="[--ui-btn-margin-left:0] ![--ui-btn-background:#7c3aed] ![--ui-btn-background-hover:#6d28d9] ![--ui-btn-background-active:#5b21b6] ![--ui-btn-border-color:#7c3aed] ![--ui-btn-border-color-hover:#6d28d9] ![--ui-btn-border-color-active:#5b21b6] ![--ui-btn-color:#fff] ![--ui-btn-color-hover:#fff] ![--ui-btn-color-active:#fff]"
+                  class="[--ui-btn-margin-left:0] ![--ui-btn-background:var(--mb-primary)] ![--ui-btn-background-hover:var(--mb-primary-hover)] ![--ui-btn-background-active:var(--mb-primary-active)] ![--ui-btn-border-color:var(--mb-primary)] ![--ui-btn-border-color-hover:var(--mb-primary-hover)] ![--ui-btn-border-color-active:var(--mb-primary-active)] ![--ui-btn-color:#fff] ![--ui-btn-color-hover:#fff] ![--ui-btn-color-active:#fff]"
                   @click="confirmUnbindPayment"
                 />
               </div>
