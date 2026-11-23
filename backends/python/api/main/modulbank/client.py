@@ -18,6 +18,8 @@ from typing import Any, Iterator
 
 import requests
 
+from . import tls
+
 SANDBOX_TOKEN = "sandboxtoken"
 
 # Направление операции в API Модульбанка: Debet — поступление, Credit — списание.
@@ -48,7 +50,7 @@ class ModulbankClient:
         self.token = token
         self.sandbox = sandbox
         self.timeout = timeout
-        self._http = session or requests.Session()
+        self._http = session or tls.session()
 
     @classmethod
     def for_sandbox(cls, **kwargs) -> "ModulbankClient":

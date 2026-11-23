@@ -102,8 +102,14 @@ def modulbank_connect(request: AuthorizedRequest):
         companies = client.get_account_info()
     except ModulbankAuthError:
         return JsonResponse({"error": "Модульбанк не принял ключ API. Проверьте ключ и права account-info и operation-history."}, status=400)
-    except (ModulbankError, OSError) as e:
-        return JsonResponse({"error": f"Не удалось связаться с Модульбанком: {e}"}, status=502)
+    except ModulbankError as e:
+        logger.warning("modulbank_connect: bank error (sandbox=%s): %s", sandbox, e)
+        return JsonResponse({"error": f"Модульбанк ответил ошибкой: {e}"}, status=502)
+    except OSError as e:
+        logger.warning("modulbank_connect: connection failed (sandbox=%s): %s", sandbox, e)
+        return JsonResponse({
+            "error": "Не удалось связаться с Модульбанком. Проверьте соединение сервера с api.modulbank.ru и попробуйте ещё раз.",
+        }, status=502)
 
     if not companies:
         return JsonResponse({"error": "По этому ключу в Модульбанке не нашлось ни одной компании"}, status=400)

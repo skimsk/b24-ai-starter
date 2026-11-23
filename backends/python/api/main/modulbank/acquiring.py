@@ -25,6 +25,8 @@ from typing import Any, Mapping
 
 import requests
 
+from . import tls
+
 PAY_HOST = "https://pay.modulbank.ru"
 PAY_FORM_URL = f"{PAY_HOST}/pay/"
 TRANSACTION_URL = f"{PAY_HOST}/api/v1/transaction/"
@@ -137,7 +139,7 @@ def get_transaction(merchant_id: str, secret_key: str, transaction_id: str, time
         "salt": _salt(),
     }
     params["signature"] = signature(params, secret_key)
-    resp = requests.get(TRANSACTION_URL, params=params, timeout=timeout)
+    resp = requests.get(TRANSACTION_URL, params=params, timeout=timeout, verify=tls.ca_bundle_path())
     try:
         data = resp.json()
     except ValueError:
@@ -157,7 +159,7 @@ def refund(merchant_id: str, secret_key: str, transaction_id: str, amount: Any, 
         "unix_timestamp": str(int(time.time())),
     }
     data["signature"] = signature(data, secret_key)
-    resp = requests.post(REFUND_URL, data=data, timeout=timeout)
+    resp = requests.post(REFUND_URL, data=data, timeout=timeout, verify=tls.ca_bundle_path())
     try:
         body = resp.json()
     except ValueError as e:
