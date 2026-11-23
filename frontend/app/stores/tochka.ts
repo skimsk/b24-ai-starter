@@ -48,6 +48,14 @@ function normalizeModulbankAccount(raw: ModulbankAccountRow): TochkaAccount {
   }
 }
 
+export interface ModulbankAcquiringSettings {
+  configured: boolean
+  merchantId: string
+  hasSecretKey: boolean
+  testing: boolean
+  callbackUrl: string
+}
+
 export interface TochkaBalance {
   accountId: string
   amount: { amount: string; currency: string }
@@ -684,7 +692,20 @@ export const useTochkaStore = defineStore('tochka', () => {
   }
 
   async function fetchAcquiringRetailers(): Promise<any> {
-    return await $api('/api/tochka/acquiring/retailers', { headers: _tokenHeader() })
+    return await $api('/api/modulbank/acquiring/retailers', { headers: _tokenHeader() })
+  }
+
+  /** Доступы интернет-эквайринга Модульбанка (Merchant ID и секретный ключ из ЛК эквайринга). */
+  async function fetchAcquiringSettings(): Promise<ModulbankAcquiringSettings> {
+    return await $api<ModulbankAcquiringSettings>('/api/modulbank/acquiring/settings', { headers: _tokenHeader() })
+  }
+
+  async function saveAcquiringSettings(body: { merchantId: string; secretKey?: string; testing: boolean }) {
+    return await $api<ModulbankAcquiringSettings>('/api/modulbank/acquiring/settings', {
+      method: 'POST',
+      headers: _tokenHeader(),
+      body: JSON.stringify(body),
+    })
   }
 
   async function createAcquiringPaymentLink(body: {
@@ -704,7 +725,7 @@ export const useTochkaStore = defineStore('tochka', () => {
     paymentModesDropped?: string[]
     raw?: any
   }> {
-    return await $api('/api/tochka/acquiring/payment-links', {
+    return await $api('/api/modulbank/acquiring/payment-links', {
       method: 'POST',
       headers: _tokenHeader(),
       body: JSON.stringify(body),
@@ -712,7 +733,7 @@ export const useTochkaStore = defineStore('tochka', () => {
   }
 
   async function refreshAcquiringStatuses(): Promise<{ updated: number }> {
-    return await $api<{ updated: number }>('/api/tochka/acquiring/refresh-statuses', {
+    return await $api<{ updated: number }>('/api/modulbank/acquiring/refresh-statuses', {
       method: 'POST',
       headers: _tokenHeader(),
     })
@@ -727,7 +748,7 @@ export const useTochkaStore = defineStore('tochka', () => {
 
   async function refundAcquiringOperation(operationId: string, body?: { amount?: number }) {
     return await $api<{ success?: boolean; error?: string; code?: string }>(
-      `/api/tochka/acquiring/operations/${operationId}/refund`,
+      `/api/modulbank/acquiring/operations/${operationId}/refund`,
       {
         method: 'POST',
         headers: _tokenHeader(),
@@ -767,6 +788,8 @@ export const useTochkaStore = defineStore('tochka', () => {
     fetchPortalPreferences,
     savePortalPreferences,
     fetchAcquiringRetailers,
+    fetchAcquiringSettings,
+    saveAcquiringSettings,
     createAcquiringPaymentLink,
     refreshAcquiringStatuses,
     unlinkAcquiringOperation,

@@ -704,16 +704,6 @@ watch(createLinkKind, () => {
             </select>
           </label>
           <label class="block text-xs text-gray-600 sm:col-span-2">
-            {{ t('placement.crm_entity_payments.create_link_merchant_hint') }}
-            <input
-              v-model="createLinkMerchantId"
-              type="text"
-              class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"
-              :placeholder="t('placement.crm_entity_payments.create_link_merchant_placeholder')"
-              @blur="loadRetailersForModal"
-            />
-          </label>
-          <label class="block text-xs text-gray-600 sm:col-span-2">
             {{ t('placement.crm_entity_payments.create_link_purpose') }}
             <textarea
               v-model="createLinkPurpose"
@@ -800,8 +790,8 @@ watch(createLinkKind, () => {
             {{ t('placement.crm_entity_payments.channel.sbp') }}
           </label>
           <label
-            class="inline-flex items-center gap-2"
-            :class="retailerMirAvailable ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'"
+            v-if="retailerMirAvailable"
+            class="inline-flex items-center gap-2 cursor-pointer"
           >
             <input
               v-model="linkModeMir"
@@ -812,8 +802,8 @@ watch(createLinkKind, () => {
             {{ t('placement.crm_entity_payments.channel.mir_pay') }}
           </label>
           <label
-            class="inline-flex items-center gap-2"
-            :class="retailerDolyameAvailable ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'"
+            v-if="retailerDolyameAvailable"
+            class="inline-flex items-center gap-2 cursor-pointer"
           >
             <input
               v-model="linkModeDolyame"
@@ -826,12 +816,6 @@ watch(createLinkKind, () => {
         </div>
         <p class="text-[11px] leading-snug text-gray-500 mt-1">
           {{ t('placement.crm_entity_payments.create_link_modes_tochka_help') }}
-        </p>
-        <p
-          v-if="createLinkRetailerModes && createLinkRetailerModes.size > 0 && (!retailerMirAvailable || !retailerDolyameAvailable)"
-          class="text-[11px] leading-snug text-amber-800 mt-1"
-        >
-          {{ t('placement.crm_entity_payments.create_link_modes_retailer_missing') }}
         </p>
         <p
           v-if="createLinkLowAmountForExtraModes"

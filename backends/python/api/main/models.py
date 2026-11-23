@@ -346,8 +346,16 @@ class ModulbankCredentials(models.Model):
     company_inn = models.CharField(max_length=12, blank=True, default="")
     webhook_key = models.CharField(max_length=64, unique=True, default=_new_webhook_key)
     last_sync_attempt_at = models.DateTimeField(null=True, blank=True)
+    # Интернет-эквайринг (pay.modulbank.ru): доступы из ЛК эквайринга, не ключ API выписки.
+    acquiring_merchant_id = models.CharField(max_length=64, blank=True, default="")
+    acquiring_secret_key = models.CharField(max_length=255, blank=True, default="")
+    acquiring_testing = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def acquiring_configured(self) -> bool:
+        return bool(self.acquiring_merchant_id and self.acquiring_secret_key)
 
     class Meta:
         db_table = "modulbank_credentials"

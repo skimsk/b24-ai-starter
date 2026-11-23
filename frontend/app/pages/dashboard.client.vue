@@ -72,10 +72,6 @@ const acquiringStatusLoading = ref(false)
 const acquiringActiveRetailers = ref<Array<{ name: string; merchantId: string }>>([])
 
 async function loadAcquiringStatus() {
-  if (!tochkaStore.status.connected) {
-    acquiringActiveRetailers.value = []
-    return
-  }
   acquiringStatusLoading.value = true
   try {
     const data = await tochkaStore.fetchAcquiringRetailers()
@@ -105,6 +101,47 @@ async function loadAcquiringStatus() {
 }
 
 const acquiringIsActive = computed(() => acquiringActiveRetailers.value.length > 0)
+
+/* Доступы интернет-эквайринга Модульбанка: Merchant ID и секретный ключ из ЛК эквайринга. */
+const acquiringForm = ref({ merchantId: '', secretKey: '', testing: false })
+const acquiringHasSecret = ref(false)
+const acquiringCallbackUrl = ref('')
+const acquiringSaving = ref(false)
+const acquiringSaveError = ref('')
+const acquiringSaved = ref(false)
+
+async function loadAcquiringSettings() {
+  try {
+    const data = await tochkaStore.fetchAcquiringSettings()
+    acquiringForm.value = { merchantId: data.merchantId || '', secretKey: '', testing: !!data.testing }
+    acquiringHasSecret.value = data.hasSecretKey
+    acquiringCallbackUrl.value = data.callbackUrl || ''
+  } catch {
+    /* настройки не загрузились — форма останется пустой */
+  }
+}
+
+async function saveAcquiringSettings() {
+  acquiringSaving.value = true
+  acquiringSaveError.value = ''
+  acquiringSaved.value = false
+  try {
+    const data = await tochkaStore.saveAcquiringSettings({
+      merchantId: acquiringForm.value.merchantId.trim(),
+      secretKey: acquiringForm.value.secretKey.trim() || undefined,
+      testing: acquiringForm.value.testing,
+    })
+    acquiringForm.value.secretKey = ''
+    acquiringHasSecret.value = data.hasSecretKey
+    acquiringSaved.value = true
+    await loadAcquiringStatus()
+  } catch (e: unknown) {
+    const err = e as { data?: { error?: string } }
+    acquiringSaveError.value = err?.data?.error || 'Не удалось сохранить настройки эквайринга'
+  } finally {
+    acquiringSaving.value = false
+  }
+}
 
 const filteredKindFields = computed(() => {
   const q = ufKindSearch.value.toLowerCase().trim()
@@ -1122,7 +1159,7 @@ function onAcquiringUnlinkDeal(p: { id: string; matched_deal_id?: number | null;
 }
 
 async function onAcquiringRefund(p: { id: string }) {
-  if (!confirm('Оформить возврат по этой оплате через Точку?')) return
+  if (!confirm('Оформить возврат по этой оплате через Модульбанк?')) return
   acquiringActionMenu.value = null
   try {
     await tochkaStore.refundAcquiringOperation(p.id)
@@ -1853,6 +1890,7 @@ watch(settingsSubTab, async (t) => {
   }
   if (t === 'paymentCrm') {
     void loadAcquiringStatus()
+    void loadAcquiringSettings()
   }
   if (t === 'paymentCrm' && dealUserFields.value.length === 0) {
     await loadDealUserFields()
@@ -3615,7 +3653,7 @@ onBeforeUnmount(() => {
               <button
                 type="button"
                 class="shrink-0 px-3 py-1.5 text-xs font-medium text-violet-700 border border-violet-300 rounded-lg hover:bg-violet-50 disabled:opacity-50"
-                :disabled="acquiringStatusLoading || !tochkaStore.status.connected"
+                :disabled="acquiringStatusLoading"
                 @click="loadAcquiringStatus"
               >
                 {{ acquiringStatusLoading ? t('dashboard.acquiring_status_loading') : t('dashboard.acquiring_refresh') }}
@@ -3623,13 +3661,7 @@ onBeforeUnmount(() => {
             </div>
 
             <div
-              v-if="!tochkaStore.status.connected"
-              class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900"
-            >
-              {{ t('dashboard.acquiring_not_connected_tochka') }}
-            </div>
-            <div
-              v-else-if="acquiringStatusLoading"
+              v-if="acquiringStatusLoading"
               class="text-sm text-gray-500"
             >
               {{ t('dashboard.acquiring_status_loading') }}
@@ -3651,6 +3683,46 @@ onBeforeUnmount(() => {
             >
               {{ t('dashboard.acquiring_status_not_connected') }}
             </div>
+
+            <form class="rounded-xl border border-blue-200 bg-white p-4 space-y-3" @submit.prevent="saveAcquiringSettings">
+              <div class="grid gap-3 sm:grid-cols-2">
+                <label class="block text-xs text-gray-600">
+                  Merchant ID
+                  <input
+                    v-model="acquiringForm.merchantId"
+                    type="text"
+                    autocomplete="off"
+                    class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm font-mono"
+                  />
+                </label>
+                <label class="block text-xs text-gray-600">
+                  {{ t('dashboard.acquiring_secret_key') }}
+                  <input
+                    v-model="acquiringForm.secretKey"
+                    type="password"
+                    autocomplete="off"
+                    class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm font-mono"
+                    :placeholder="acquiringHasSecret ? t('dashboard.acquiring_secret_key_saved') : ''"
+                  />
+                </label>
+              </div>
+              <label class="inline-flex items-center gap-2 text-sm text-gray-700">
+                <input v-model="acquiringForm.testing" type="checkbox" class="rounded border-gray-300" />
+                {{ t('dashboard.acquiring_testing') }}
+              </label>
+              <div class="flex flex-wrap items-center gap-3">
+                <B24Button
+                  type="submit"
+                  color="air-primary"
+                  size="sm"
+                  :loading="acquiringSaving"
+                  :disabled="!acquiringForm.merchantId.trim()"
+                  :label="t('dashboard.acquiring_save')"
+                />
+                <span v-if="acquiringSaved" class="text-xs text-green-700">{{ t('dashboard.acquiring_saved') }}</span>
+                <span v-if="acquiringSaveError" class="text-xs text-red-600">{{ acquiringSaveError }}</span>
+              </div>
+            </form>
 
             <p class="text-sm text-blue-950 leading-relaxed">
               {{ t('placement.crm_entity_payments.create_link_acquiring_required_intro') }}
