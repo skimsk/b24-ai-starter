@@ -101,7 +101,7 @@ function handleNext() {
       </div>
 
       <div v-else-if="!tochkaStore.status.connected" class="setup-accounts__empty">
-        <p class="setup-accounts__empty-title">Точка Банк не подключен</p>
+        <p class="setup-accounts__empty-title">Модульбанк не подключён</p>
         <p class="setup-accounts__empty-text">Обновите страницу или начните подключение заново</p>
       </div>
 

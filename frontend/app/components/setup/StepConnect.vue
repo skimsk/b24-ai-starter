@@ -1,110 +1,51 @@
 <script setup lang="ts">
 import SplashBrandMark from '~/components/SplashBrandMark.vue'
 
+/**
+ * Шаг «Подключение банка»: клиент вставляет ключ API из личного кабинета
+ * Модульбанка. Сервер проверяет ключ запросом счетов и сохраняет подключение.
+ */
 const emit = defineEmits<{
   (e: 'next'): void
 }>()
 
 const tochkaStore = useTochkaStore()
 
+const apiToken = ref('')
 const isConnecting = ref(false)
-const isWaitingAuth = ref(false)
-const pendingAuthUrl = ref<string | null>(null)
-const checkInterval = ref<ReturnType<typeof setInterval> | null>(null)
+const showHelp = ref(false)
 const error = ref('')
 
-function handleAuthSuccess() {
-  isWaitingAuth.value = false
-  isConnecting.value = false
-  if (checkInterval.value) {
-    clearInterval(checkInterval.value)
-    checkInterval.value = null
-  }
-  emit('next')
-}
-
-async function openAuthWindow(authUrl: string) {
-  const authWindow = window.open(authUrl, 'tochka_auth', 'width=600,height=700,scrollbars=yes')
-  isWaitingAuth.value = true
-
-  checkInterval.value = setInterval(async () => {
-    if (authWindow?.closed) {
-      if (checkInterval.value) clearInterval(checkInterval.value)
-      checkInterval.value = null
-      isConnecting.value = false
-      isWaitingAuth.value = false
-
-      await tochkaStore.fetchStatus()
-      if (tochkaStore.status.connected) {
-        handleAuthSuccess()
-      } else {
-        error.value = 'Авторизация не завершена. Нажмите «Подключить» ещё раз.'
-      }
-    }
-  }, 500)
-}
-
-async function handleConnect() {
+async function connectWith(opts: { apiToken?: string; sandbox?: boolean }) {
   error.value = ''
   isConnecting.value = true
-
   try {
-    const authUrl = await tochkaStore.connectWithEnvCredentials({ popup: true })
-
-    if (authUrl) {
-      pendingAuthUrl.value = authUrl
-      await openAuthWindow(authUrl)
+    await tochkaStore.connect(opts)
+    if (tochkaStore.status.connected) {
+      apiToken.value = ''
+      emit('next')
+    } else {
+      error.value = 'Модульбанк не подтвердил подключение. Попробуйте ещё раз.'
     }
   } catch {
-    error.value = tochkaStore.error || 'Не удалось подключиться к Точке'
+    error.value = tochkaStore.error || 'Не удалось подключить Модульбанк'
+  } finally {
     isConnecting.value = false
   }
 }
 
-function handleRetry() {
-  error.value = ''
-  if (pendingAuthUrl.value) {
-    openAuthWindow(pendingAuthUrl.value)
-  } else {
-    handleConnect()
+function handleConnect() {
+  const token = apiToken.value.trim()
+  if (!token) {
+    error.value = 'Вставьте ключ API из личного кабинета Модульбанка'
+    return
   }
+  connectWith({ apiToken: token })
 }
 
-function handleMessage(event: MessageEvent) {
-  if (event.data?.type === 'tochka_connected' || event.data?.tochkaAuth === 'ok') {
-    tochkaStore.fetchStatus().then(() => {
-      if (tochkaStore.status.connected) {
-        handleAuthSuccess()
-      }
-    })
-  } else if (event.data?.type === 'tochka_error') {
-    isWaitingAuth.value = false
-    isConnecting.value = false
-    if (checkInterval.value) clearInterval(checkInterval.value)
-    error.value = decodeURIComponent(event.data.error || 'Ошибка авторизации')
-  }
+function handleSandbox() {
+  connectWith({ sandbox: true })
 }
-
-onMounted(() => {
-  window.addEventListener('message', handleMessage)
-
-  const urlParams = new URLSearchParams(window.location.search)
-  const tochkaConnected = urlParams.get('tochka_connected')
-
-  if (tochkaConnected === 'true' && window.name !== 'tochka_auth' && !window.opener) {
-    window.history.replaceState({}, '', window.location.pathname)
-    tochkaStore.fetchStatus().then(() => {
-      if (tochkaStore.status.connected) {
-        handleAuthSuccess()
-      }
-    })
-  }
-})
-
-onUnmounted(() => {
-  window.removeEventListener('message', handleMessage)
-  if (checkInterval.value) clearInterval(checkInterval.value)
-})
 </script>
 
 <template>
@@ -113,7 +54,7 @@ onUnmounted(() => {
       <div class="setup-connect__logo">
         <div class="setup-connect__logo-ring">
           <div
-            v-if="isWaitingAuth"
+            v-if="isConnecting"
             class="setup-connect__logo-spinner"
             aria-hidden="true"
           />
@@ -121,41 +62,55 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <h1 class="setup-connect__title">Подключение Точка Банк</h1>
+      <h1 class="setup-connect__title">Подключение Модульбанка</h1>
 
-      <p v-if="isWaitingAuth" class="setup-connect__text">
-        Завершите авторизацию в окне Точка Банк. Окно закроется автоматически после успешного подключения.
+      <p class="setup-connect__text">
+        Вставьте ключ API из личного кабинета Модульбанка
       </p>
-      <p v-else class="setup-connect__text">
-        Авторизуйтесь через сайт Точки
-      </p>
+
+      <form class="setup-connect__form" @submit.prevent="handleConnect">
+        <input
+          v-model="apiToken"
+          class="setup-connect__input"
+          type="password"
+          autocomplete="off"
+          placeholder="Ключ API Модульбанка"
+          :disabled="isConnecting"
+        >
+        <div class="setup-connect__actions">
+          <button
+            type="submit"
+            class="setup-connect__btn setup-connect__btn--primary"
+            :disabled="isConnecting || !apiToken.trim()"
+          >
+            {{ isConnecting ? 'Проверяю ключ...' : 'Подключить Модульбанк' }}
+          </button>
+        </div>
+      </form>
 
       <p v-if="error" class="setup-connect__error">
         {{ error }}
       </p>
 
-      <div class="setup-connect__actions">
-        <button
-          v-if="isWaitingAuth"
-          type="button"
-          class="setup-connect__btn setup-connect__btn--secondary"
-          @click="handleRetry"
-        >
-          Открыть окно снова
+      <p class="setup-connect__hint">
+        <button type="button" class="setup-connect__link" @click="showHelp = !showHelp">
+          Где взять ключ API?
         </button>
-        <button
-          v-else
-          type="button"
-          class="setup-connect__btn setup-connect__btn--primary"
-          :disabled="isConnecting"
-          @click="handleConnect"
-        >
-          {{ isConnecting ? 'Подключение...' : 'Подключить Точка Банк' }}
+        ·
+        <button type="button" class="setup-connect__link" :disabled="isConnecting" @click="handleSandbox">
+          Попробовать на тестовых данных
         </button>
-      </div>
+      </p>
 
-      <p v-if="!isWaitingAuth" class="setup-connect__hint">
-        Вы будете перенаправлены на страницу авторизации Точка Банка
+      <ol v-if="showHelp" class="setup-connect__steps">
+        <li>Войдите в личный кабинет Модульбанка с компьютера.</li>
+        <li>Откройте «Настройки» → «API» (раздел для интеграций).</li>
+        <li>Создайте ключ с правами «account-info» и «operation-history».</li>
+        <li>Скопируйте ключ и вставьте его в поле выше.</li>
+      </ol>
+      <p v-if="showHelp" class="setup-connect__hint">
+        Ключ даёт только просмотр счетов и выписки, платежи по нему сделать нельзя.
+        Отозвать его можно в личном кабинете в любой момент.
       </p>
     </div>
   </section>
@@ -290,6 +245,54 @@ onUnmounted(() => {
   color: #9ca3af;
   line-height: 1.6;
   margin-top: 2rem;
+}
+
+.setup-connect__form {
+  display: block;
+  width: 100%;
+  margin-top: 1.25rem;
+}
+
+.setup-connect__input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.setup-connect__input:focus {
+  outline: none;
+  border-color: var(--mb-accent);
+  box-shadow: 0 0 0 3px var(--mb-soft);
+}
+
+.setup-connect__link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--mb-accent);
+  font: inherit;
+  cursor: pointer;
+}
+
+.setup-connect__link:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.setup-connect__steps {
+  margin: 0.75rem auto 0;
+  padding-left: 1.25rem;
+  max-width: 26rem;
+  text-align: left;
+  color: #374151;
+  font-size: 0.875rem;
+  line-height: 1.6;
 }
 
 @keyframes setup-connect-spin {

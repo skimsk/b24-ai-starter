@@ -65,14 +65,14 @@ def iter_sync_accounts(account_info: Iterable[dict]) -> Iterable[tuple[dict, dic
             yield company, account
 
 
-def operation_to_payment_fields(operation: dict, bank_account_id: str) -> dict:
+def operation_to_payment_fields(operation: dict, account_number: str) -> dict:
     """Поля TochkaPayment из операции Модульбанка."""
     incoming = operation.get("category") == CATEGORY_INCOMING
     purpose = operation.get("paymentPurpose") or ""
     amount = operation.get("amount") or 0
     currency = operation.get("currency") or "RUR"
     return {
-        "account_id": bank_account_id,
+        "account_id": account_number,
         "payment_slip_number": (str(operation.get("docNumber")).strip() or None) if operation.get("docNumber") else None,
         "amount": float(amount),
         "amount_nat": None,
@@ -90,13 +90,13 @@ def operation_to_payment_fields(operation: dict, bank_account_id: str) -> dict:
     }
 
 
-def upsert_operation(member_id: str, operation: dict, bank_account_id: str) -> tuple[TochkaPayment | None, bool]:
+def upsert_operation(member_id: str, operation: dict, account_number: str) -> tuple[TochkaPayment | None, bool]:
     """Создать или обновить платёж по операции. Возвращает (платёж, создан ли)."""
     op_id = operation.get("id")
     if not op_id or operation.get("status") in SKIPPED_OPERATION_STATUSES:
         return None, False
 
-    fields = operation_to_payment_fields(operation, bank_account_id)
+    fields = operation_to_payment_fields(operation, account_number)
     existing = TochkaPayment.objects.filter(member_id=member_id, transaction_id=op_id).first()
     if existing:
         TochkaPayment.objects.filter(pk=existing.pk).update(**fields)
@@ -145,9 +145,11 @@ def run_modulbank_sync(
     total_synced = 0
     new_payment_ids: list = []
     for _company, account in iter_sync_accounts(client.get_account_info()):
-        account_id = account["id"]
-        for operation in client.iter_operations(account_id, date_from=date_from, date_till=date_till):
-            payment, created = upsert_operation(member_id, operation, account_id)
+        # В платежах храним номер счёта, а не внутренний id: его видно в интерфейсе,
+        # и он же приходит в вебхуке (bankAccountNumber).
+        account_number = account.get("number") or account["id"]
+        for operation in client.iter_operations(account["id"], date_from=date_from, date_till=date_till):
+            payment, created = upsert_operation(member_id, operation, account_number)
             if payment is None:
                 continue
             total_synced += 1

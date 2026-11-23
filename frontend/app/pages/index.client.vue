@@ -26,12 +26,12 @@ const steps = [
 ]
 
 const CRM_FIELDS = [
-  { FIELD_NAME: 'UF_CRM_TOCHKA_INVOICE', EDIT_FORM_LABEL: { ru: 'Номер счёта [Точка Банк. Интеграция]' }, USER_TYPE_ID: 'string' },
-  { FIELD_NAME: 'UF_CRM_TOCHKA_AMOUNT', EDIT_FORM_LABEL: { ru: 'Сумма оплаты [Точка Банк. Интеграция]' }, USER_TYPE_ID: 'double' },
-  { FIELD_NAME: 'UF_CRM_TOCHKA_DATE', EDIT_FORM_LABEL: { ru: 'Дата оплаты [Точка Банк. Интеграция]' }, USER_TYPE_ID: 'date' },
-  { FIELD_NAME: 'UF_CRM_TOCHKA_PURPOSE', EDIT_FORM_LABEL: { ru: 'Назначение платежа [Точка Банк. Интеграция]' }, USER_TYPE_ID: 'string' },
-  { FIELD_NAME: 'UF_CRM_TOCHKA_INN', EDIT_FORM_LABEL: { ru: 'ИНН контрагента [Точка Банк. Интеграция]' }, USER_TYPE_ID: 'string' },
-  { FIELD_NAME: 'UF_CRM_TOCHKA_COMPANY', EDIT_FORM_LABEL: { ru: 'Контрагент [Точка Банк. Интеграция]' }, USER_TYPE_ID: 'string' },
+  { FIELD_NAME: 'UF_CRM_TOCHKA_INVOICE', EDIT_FORM_LABEL: { ru: 'Номер счёта [Модульбанк. Интеграция]' }, USER_TYPE_ID: 'string' },
+  { FIELD_NAME: 'UF_CRM_TOCHKA_AMOUNT', EDIT_FORM_LABEL: { ru: 'Сумма оплаты [Модульбанк. Интеграция]' }, USER_TYPE_ID: 'double' },
+  { FIELD_NAME: 'UF_CRM_TOCHKA_DATE', EDIT_FORM_LABEL: { ru: 'Дата оплаты [Модульбанк. Интеграция]' }, USER_TYPE_ID: 'date' },
+  { FIELD_NAME: 'UF_CRM_TOCHKA_PURPOSE', EDIT_FORM_LABEL: { ru: 'Назначение платежа [Модульбанк. Интеграция]' }, USER_TYPE_ID: 'string' },
+  { FIELD_NAME: 'UF_CRM_TOCHKA_INN', EDIT_FORM_LABEL: { ru: 'ИНН контрагента [Модульбанк. Интеграция]' }, USER_TYPE_ID: 'string' },
+  { FIELD_NAME: 'UF_CRM_TOCHKA_COMPANY', EDIT_FORM_LABEL: { ru: 'Контрагент [Модульбанк. Интеграция]' }, USER_TYPE_ID: 'string' },
 ]
 
 async function createCrmFields() {

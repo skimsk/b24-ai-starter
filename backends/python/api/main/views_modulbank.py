@@ -22,7 +22,6 @@ from .modulbank import ModulbankAuthError, ModulbankClient, ModulbankError, veri
 from .modulbank_sync_logic import (
     get_connected_credentials,
     get_modulbank_client,
-    iter_sync_accounts,
     run_modulbank_sync,
     upsert_operation,
 )
@@ -64,6 +63,12 @@ def modulbank_status(request: AuthorizedRequest):
         "companyInn": creds.company_inn if creds else None,
         "webhookUrl": _webhook_url(creds) if creds and creds.is_connected else None,
         "lastSyncAt": last_sync_at.isoformat().replace("+00:00", "Z") if last_sync_at else None,
+        # Поля в том же виде, что у /api/tochka/status: их читает общий интерфейс.
+        "clientId": creds.company_name if creds else None,
+        "bankPushConfigured": False,
+        "scheduledSyncIntervalMinutes": config.tochka_scheduled_sync_interval_minutes,
+        "clientAutoSyncEnabled": bool(prefs and prefs.client_auto_sync_enabled),
+        "clientAutoSyncIntervalMinutes": prefs.client_auto_sync_interval_minutes if prefs else 15,
     })
 
 
@@ -156,7 +161,9 @@ def modulbank_accounts(request: AuthorizedRequest):
     for company in companies:
         for account in company.get("bankAccounts") or []:
             accounts.append({
-                "accountId": account.get("id"),
+                # accountId — номер счёта, как в платежах; внутренний id банка отдельно.
+                "accountId": account.get("number") or account.get("id"),
+                "bankAccountId": account.get("id"),
                 "number": account.get("number"),
                 "name": account.get("accountName"),
                 "category": account.get("category"),
@@ -213,19 +220,6 @@ def modulbank_sync(request: AuthorizedRequest):
     return JsonResponse(result)
 
 
-def _account_id_for_number(creds: ModulbankCredentials, account_number: str) -> str:
-    """id счёта по номеру: в уведомлении есть только номер счёта."""
-    if not account_number:
-        return ""
-    try:
-        for _company, account in iter_sync_accounts(get_modulbank_client(creds).get_account_info()):
-            if account.get("number") == account_number:
-                return account["id"]
-    except (ModulbankError, OSError) as e:
-        logger.warning("modulbank_webhook: account lookup failed: %s", e)
-    return account_number
-
-
 @xframe_options_exempt
 @csrf_exempt
 @require_POST
@@ -247,8 +241,7 @@ def modulbank_webhook(request, webhook_key: str):
     if not verify_webhook_signature(creds.api_token, str(operation.get("id") or ""), payload.get("SHA1Hash")):
         return JsonResponse({"ok": False}, status=401)
 
-    account_id = _account_id_for_number(creds, operation.get("bankAccountNumber") or "")
-    payment, created = upsert_operation(creds.member_id, operation, account_id)
+    payment, created = upsert_operation(creds.member_id, operation, operation.get("bankAccountNumber") or "")
     if payment is not None:
         new_ids = [payment.pk] if created and payment.credit_debit == "credit" else []
         run_post_sync_processing(creds.member_id, {"new_payment_ids": new_ids})

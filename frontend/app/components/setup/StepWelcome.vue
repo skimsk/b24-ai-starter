@@ -8,14 +8,14 @@ defineEmits<{
 
 <template>
   <div class="flex flex-col items-center justify-center min-h-[500px] px-8 py-16">
-    <!-- Тот же логотип Точка, что на экране загрузки приложения -->
+    <!-- Тот же логотип Модульбанка, что на экране загрузки приложения -->
     <div class="mb-5 shrink-0">
       <SplashBrandMark compact />
     </div>
 
     <!-- Title -->
-    <h1 class="text-2xl font-bold text-gray-900 mb-1 text-center whitespace-nowrap">Точка Банк. Интеграция</h1>
-    <p class="text-gray-500 text-sm mb-12 text-center whitespace-nowrap">Настроим интеграцию с Точка Банком за несколько минут</p>
+    <h1 class="text-2xl font-bold text-gray-900 mb-1 text-center whitespace-nowrap">Модульбанк. Интеграция</h1>
+    <p class="text-gray-500 text-sm mb-12 text-center whitespace-nowrap">Настроим интеграцию с Модульбанком за несколько минут</p>
 
     <!-- Features: сетка 3×2 (три колонки, два ряда) на широком экране -->
     <div
@@ -29,7 +29,7 @@ defineEmits<{
           </svg>
         </div>
         <h3 class="text-sm font-semibold text-gray-800 text-center mb-2 min-h-[2.5rem] flex items-center justify-center">Импорт платежей</h3>
-        <p class="text-xs text-gray-500 text-center leading-relaxed">Автоматическая загрузка из Точка Банка</p>
+        <p class="text-xs text-gray-500 text-center leading-relaxed">Автоматическая загрузка из Модульбанка</p>
       </div>
 
       <!-- Card 2 -->

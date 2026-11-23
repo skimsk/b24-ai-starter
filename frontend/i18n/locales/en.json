@@ -126,7 +126,7 @@
       "refresh": "Refresh",
       "loading": "Loading…",
       "empty": "No payments for this record yet: match statement lines on the dashboard or create a payment link.",
-      "not_connected": "Tochka Bank is not connected. Connect in the app to sync statements.",
+      "not_connected": "Modulbank is not connected. Connect in the app to sync statements.",
       "overpayment": "Overpayment",
       "bad_entity_id": "Could not determine the CRM record ID.",
       "unlink": "Unlink payment",

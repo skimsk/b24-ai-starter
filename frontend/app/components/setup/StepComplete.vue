@@ -29,7 +29,7 @@ onUnmounted(() => {
 
       <h1 class="setup-complete__title">Готово!</h1>
       <p class="setup-complete__text">
-        Интеграция с Точка Банком настроена. Платежи будут автоматически синхронизироваться с CRM.
+        Интеграция с Модульбанком настроена. Платежи будут автоматически синхронизироваться с CRM.
       </p>
 
       <div class="setup-complete__summary">

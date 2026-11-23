@@ -282,7 +282,7 @@ _avatar_push_at: dict[str, float] = {}
 
 def _tochka_bot_register_properties() -> Dict[str, Any]:
     props: Dict[str, Any] = {
-        "name": "Точка Банк",
+        "name": "Модульбанк",
         "workPosition": "Уведомления об оплатах",
     }
     b64 = tochka_chat_bot_avatar_base64()
@@ -316,7 +316,7 @@ def push_tochka_integration_chat_bot_avatar(
 ) -> None:
     """Имя/должность/аватар через imbot.v2.Bot.update (повторный register профиль не обновляет)."""
     props: Dict[str, Any] = {
-        "name": "Точка Банк",
+        "name": "Модульбанк",
         "workPosition": "Уведомления об оплатах",
     }
     b64 = tochka_chat_bot_avatar_base64()

@@ -126,7 +126,7 @@ class WebhookSignatureTest(unittest.TestCase):
 
 class OperationMappingTest(unittest.TestCase):
     def test_incoming_operation_maps_to_credit_payment(self):
-        f = sync.operation_to_payment_fields(OPERATION_IN, "acc-checking")
+        f = sync.operation_to_payment_fields(OPERATION_IN, "40702810000000000001")
         self.assertEqual(f["credit_debit"], "credit")
         self.assertEqual(f["currency"], "RUB")
         self.assertEqual(f["amount"], 100000.0)
@@ -135,7 +135,7 @@ class OperationMappingTest(unittest.TestCase):
         self.assertEqual(f["payment_slip_number"], "4")
         self.assertEqual(f["invoice_number"], "4")
         self.assertEqual(f["vat_type"], "Без НДС")
-        self.assertEqual(f["account_id"], "acc-checking")
+        self.assertEqual(f["account_id"], "40702810000000000001")
         self.assertEqual(
             f["transaction_date"],
             datetime(2016, 4, 1, 10, 30, tzinfo=ZoneInfo("Europe/Moscow")),
@@ -179,12 +179,15 @@ class RunSyncTest(unittest.TestCase):
 
         with patch.object(sync, "get_connected_credentials", return_value=creds), \
                 patch.object(sync, "get_modulbank_client", return_value=client), \
-                patch.object(sync, "upsert_operation", side_effect=[(created_in, True), (created_out, True)]), \
+                patch.object(sync, "upsert_operation", side_effect=[(created_in, True), (created_out, True)]) as upsert, \
                 patch.object(sync, "TochkaPortalPreferences"):
             result = sync.run_modulbank_sync("m1", start_date_calendar="2026-11-01", end_date_calendar="2026-11-20")
 
         self.assertEqual(result["synced"], 2)
         self.assertEqual(result["new_payment_ids"], ["new-in"])
+        # В платежи пишется номер счёта, а выписка запрашивается по id банка.
+        self.assertEqual(upsert.call_args_list[0].args[2], "40702810000000000001")
+        self.assertEqual(client.iter_operations.call_args_list[0].args[0], "acc-checking")
         kwargs = client.iter_operations.call_args_list[0].kwargs
         self.assertEqual(kwargs["date_from"], date(2026, 11, 1))
         self.assertEqual(kwargs["date_till"], date(2026, 11, 20))
@@ -210,7 +213,6 @@ class WebhookViewTest(unittest.TestCase):
             "/api/modulbank/webhook/key", data=json.dumps(payload), content_type="application/json",
         )
         with patch.object(views, "ModulbankCredentials") as model, \
-                patch.object(views, "_account_id_for_number", return_value="acc-checking"), \
                 patch.object(views, "upsert_operation", return_value=(SimpleNamespace(pk="p1", credit_debit="credit"), True)) as upsert, \
                 patch.object(views, "run_post_sync_processing") as post:
             model.objects.filter.return_value.first.return_value = creds
@@ -222,7 +224,7 @@ class WebhookViewTest(unittest.TestCase):
         payload = {"operation": OPERATION_IN, "SHA1Hash": "c039243e64c11635afbc1bd99185e34313702d43"}
         response, upsert, post = self._post(payload, creds)
         self.assertEqual(response.status_code, 200)
-        upsert.assert_called_once_with("m1", OPERATION_IN, "acc-checking")
+        upsert.assert_called_once_with("m1", OPERATION_IN, "40702810000000000001")
         post.assert_called_once_with("m1", {"new_payment_ids": ["p1"]})
 
     def test_bad_signature_rejected(self):

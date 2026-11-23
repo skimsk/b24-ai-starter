@@ -8,7 +8,7 @@ const emit = defineEmits<{
   (e: 'back'): void
 }>()
 
-const APP_LABEL = 'Точка Банк. Интеграция'
+const APP_LABEL = 'Модульбанк. Интеграция'
 
 const mode = ref<'express' | 'advanced'>('express')
 

@@ -15,7 +15,7 @@ definePageMeta({ layout: 'setup' })
 
 const { t, locales: localesI18n, setLocale } = useI18n()
 
-useHead({ title: 'Точка Банк' })
+useHead({ title: 'Модульбанк' })
 
 const { $logger, initApp, processErrorGlobal } = useAppInit('DashboardPage')
 const { $initializeB24Frame } = useNuxtApp()
@@ -195,14 +195,14 @@ async function createCrmUserField(fieldName: string, label: string): Promise<str
 
 async function createPaymentKindUf() {
   isCreatingKindUf.value = true
-  const code = await createCrmUserField('TOCHKA_PAYMENT_KIND', 'Вид оплаты [Точка]')
+  const code = await createCrmUserField('TOCHKA_PAYMENT_KIND', 'Вид оплаты [Модульбанк]')
   if (code) dealPaymentKindUfCode.value = code
   isCreatingKindUf.value = false
 }
 
 async function createPaymentChannelUf() {
   isCreatingChannelUf.value = true
-  const code = await createCrmUserField('TOCHKA_PAYMENT_CHANNEL', 'Способ оплаты [Точка]')
+  const code = await createCrmUserField('TOCHKA_PAYMENT_CHANNEL', 'Способ оплаты [Модульбанк]')
   if (code) dealPaymentChannelUfCode.value = code
   isCreatingChannelUf.value = false
 }
@@ -426,7 +426,7 @@ async function createNotificationChat() {
     const resp = await $b24.callMethod('im.chat.add', {
       TYPE: 'CHAT',
       TITLE: NOTIFY_CHAT_TITLE,
-      DESCRIPTION: 'Уведомления о входящих платежах из интеграции Точка Банк',
+      DESCRIPTION: 'Уведомления о входящих платежах из интеграции Модульбанк',
       COLOR: 'DARK_BLUE',
       AVATAR: generateChatAvatar(),
       MESSAGE: 'Чат создан для уведомлений об оплатах. Добавьте сюда нужных сотрудников.',
@@ -565,7 +565,7 @@ async function createDealMatchInnUf() {
   try {
     const code = await createCrmUserField(
       'TOCHKA_DEAL_CP_INN',
-      'ИНН контрагента [Точка Банк. Интеграция]',
+      'ИНН контрагента [Модульбанк. Интеграция]',
     )
     if (code) {
       dealMatching.value.innUf = code
@@ -582,7 +582,7 @@ async function createDealMatchNameUf() {
   try {
     const code = await createCrmUserField(
       'TOCHKA_DEAL_COUNTERPARTY',
-      'Контрагент [Точка Банк. Интеграция]',
+      'Контрагент [Модульбанк. Интеграция]',
     )
     if (code) {
       dealMatching.value.nameUf = code
@@ -599,7 +599,7 @@ async function createDealMatchInvoiceUf() {
   try {
     const code = await createCrmUserField(
       'TOCHKA_DEAL_INV_NUM',
-      'Номер счёта [Точка Банк. Интеграция]',
+      'Номер счёта [Модульбанк. Интеграция]',
     )
     if (code) {
       dealMatching.value.invoiceUf = code
@@ -616,7 +616,7 @@ async function createDealMatchPhoneUf() {
   try {
     const code = await createCrmUserField(
       'TOCHKA_DEAL_PAYER_PHONE',
-      'Телефон плательщика [Точка Банк. Интеграция]',
+      'Телефон плательщика [Модульбанк. Интеграция]',
     )
     if (code) {
       dealMatching.value.phoneUf = code
@@ -1883,7 +1883,7 @@ onMounted(async () => {
   try {
     $b24 = await $initializeB24Frame()
     await initApp($b24, localesI18n, setLocale)
-    await $b24.parent.setTitle('Точка Банк')
+    await $b24.parent.setTitle('Модульбанк')
     await tochkaStore.fetchStatus()
     if (!tochkaStore.status.connected) {
       navigateTo('/')
@@ -2846,7 +2846,7 @@ onBeforeUnmount(() => {
                 </td>
                 <td class="py-3 pr-4 font-mono text-gray-800">{{ parseTochkaAccountId(account.accountId).accountNumber || '—' }}</td>
                 <td class="py-3 pr-4 font-mono text-gray-600">{{ parseTochkaAccountId(account.accountId).bik || '—' }}</td>
-                <td class="py-3 pr-4 text-gray-600">Точка</td>
+                <td class="py-3 pr-4 text-gray-600">Модульбанк</td>
                 <td class="py-3 pr-4 text-gray-600">{{ getAccountPrefixDisplay(account.accountId) }}</td>
                 <td class="py-3 pr-4 text-gray-600">{{ getAccountSuffixDisplay(account.accountId) }}</td>
                 <td class="py-3 pr-4">
@@ -3032,7 +3032,7 @@ onBeforeUnmount(() => {
             <div class="flex flex-col w-full min-w-0">
               <h3 class="text-sm font-semibold text-gray-900">Сопоставлять платежи со сделками</h3>
               <p class="w-full min-w-0 text-xs text-gray-500 mt-1 leading-relaxed">
-                Поиск сделки по данным из выписки Точки и автоматическая привязка платежа. Настройки автоматизации — на вкладке «Автоматизация».
+                Поиск сделки по данным из выписки Модульбанка и автоматическая привязка платежа. Настройки автоматизации — на вкладке «Автоматизация».
               </p>
             </div>
 
@@ -3591,13 +3591,13 @@ onBeforeUnmount(() => {
           <p class="text-sm text-gray-500 mb-4">Пользовательские поля в сделках CRM, созданные приложением:</p>
           <div class="space-y-2">
             <div v-for="field in [
-              'Номер счёта [Точка Банк. Интеграция]',
-              'Сумма оплаты [Точка Банк. Интеграция]',
-              'Дата оплаты [Точка Банк. Интеграция]',
-              'Назначение платежа [Точка Банк. Интеграция]',
-              'ИНН контрагента [Точка Банк. Интеграция]',
-              'Контрагент [Точка Банк. Интеграция]',
-              'Телефон плательщика [Точка Банк. Интеграция]',
+              'Номер счёта [Модульбанк. Интеграция]',
+              'Сумма оплаты [Модульбанк. Интеграция]',
+              'Дата оплаты [Модульбанк. Интеграция]',
+              'Назначение платежа [Модульбанк. Интеграция]',
+              'ИНН контрагента [Модульбанк. Интеграция]',
+              'Контрагент [Модульбанк. Интеграция]',
+              'Телефон плательщика [Модульбанк. Интеграция]',
             ]" :key="field" class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg">
               <span class="text-green-600 text-xs">🔗</span>
               <span class="text-sm text-gray-700 whitespace-nowrap">{{ field }}</span>
@@ -3857,7 +3857,7 @@ onBeforeUnmount(() => {
               />
               <div class="min-w-0">
                 <span class="block text-sm text-gray-900 font-medium">Чат для уведомлений</span>
-                <span class="block text-sm text-gray-500 mt-0.5">Сообщения об оплатах и отвязках отправляются только в этот групповой чат (не в личку и не в «Заметки»). Добавьте сюда нужных сотрудников. При сохранении настроек приложение пытается добавить в чат бота «Точка Банк»; если не получилось (нет прав или бот уже в чате), пригласите его вручную из поиска контактов.</span>
+                <span class="block text-sm text-gray-500 mt-0.5">Сообщения об оплатах и отвязках отправляются только в этот групповой чат (не в личку и не в «Заметки»). Добавьте сюда нужных сотрудников. При сохранении настроек приложение пытается добавить в чат бота «Модульбанк»; если не получилось (нет прав или бот уже в чате), пригласите его вручную из поиска контактов.</span>
               </div>
             </label>
 
