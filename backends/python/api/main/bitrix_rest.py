@@ -9,7 +9,7 @@ from typing import Any, Dict, Optional
 import requests
 
 from .models import Bitrix24Account
-from .tochka_bot_avatar import tochka_chat_bot_avatar_base64
+from .tochka_bot_avatar import tochka_chat_bot_avatar_base64, tochka_chat_bot_avatar_version
 
 logger = logging.getLogger(__name__)
 
@@ -322,9 +322,12 @@ def push_tochka_integration_chat_bot_avatar(
     b64 = tochka_chat_bot_avatar_base64()
     if b64:
         props["avatar"] = b64
+    # Ключ учитывает версию картинки: новый аватар уходит на портал при первом же открытии,
+    # дальше повторяем не чаще раза в сутки.
+    push_key = f"{member_id}:{tochka_chat_bot_avatar_version()}"
     if not force:
         now = time.time()
-        prev = _avatar_push_at.get(member_id, 0.0)
+        prev = _avatar_push_at.get(push_key, 0.0)
         if now - prev < 86_400:
             return
     r = bitrix_rest_call(
@@ -344,7 +347,7 @@ def push_tochka_integration_chat_bot_avatar(
             r.get("error_description"),
         )
     else:
-        _avatar_push_at[member_id] = time.time()
+        _avatar_push_at[push_key] = time.time()
 
 
 def im_chat_user_add(

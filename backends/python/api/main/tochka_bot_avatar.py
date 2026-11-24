@@ -1,4 +1,7 @@
-"""PNG-аватар чат-бота: знак Модульбанка (сетка 5×5) на белом фоне.
+"""PNG-аватар чат-бота «Модульбанк».
+
+Основной аватар — готовая картинка assets/modulbank_bot_avatar.png (256×256).
+Если файла нет, рисуем знак Модульбанка (сетка 5×5) на белом фоне.
 
 Имена функций оставлены прежними: их вызывает общий код бота уведомлений.
 """
@@ -8,10 +11,13 @@ from __future__ import annotations
 import base64
 import io
 import logging
+import hashlib
 from functools import lru_cache
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
+AVATAR_FILE = Path(__file__).with_name("assets") / "modulbank_bot_avatar.png"
 AVATAR_SIZE = 256
 # Знак занимает ~60% стороны: UI Битрикс обрезает квадрат по кругу.
 MARK_FRACTION = 0.6
@@ -28,7 +34,15 @@ MODULBANK_MARK_GRID = (
 
 
 def build_tochka_chat_bot_avatar_png_bytes() -> bytes | None:
-    """Квадратный PNG со знаком Модульбанка для properties.avatar (Base64 в REST)."""
+    """Квадратный PNG для properties.avatar (Base64 в REST)."""
+    try:
+        return AVATAR_FILE.read_bytes()
+    except OSError:
+        logger.warning("bot avatar file %s not found; drawing the mark", AVATAR_FILE)
+    return _draw_mark_png_bytes()
+
+
+def _draw_mark_png_bytes() -> bytes | None:
     try:
         from PIL import Image, ImageDraw
     except ImportError:
@@ -57,3 +71,10 @@ def tochka_chat_bot_avatar_base64() -> str | None:
     if not raw:
         return None
     return base64.b64encode(raw).decode("ascii")
+
+
+@lru_cache(maxsize=1)
+def tochka_chat_bot_avatar_version() -> str:
+    """Короткий хеш аватара: при смене картинки бот обновится на всех порталах без ожидания суток."""
+    b64 = tochka_chat_bot_avatar_base64() or ""
+    return hashlib.sha1(b64.encode("ascii")).hexdigest()[:12]
