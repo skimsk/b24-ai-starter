@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * Центр помощи «Точка Банк. Интеграция»: руководство статьями прямо в приложении.
+ * Центр помощи «Модульбанк. Интеграция»: руководство статьями прямо в приложении.
  * По схеме других приложений 1daa.ru (см. навык b24-app-ui, §12), тема —
  * фиолетовая под бренд Точки. Поддержка живёт отдельно: отсюда только кнопка.
  */
@@ -22,15 +22,15 @@ const articles: Article[] = [
   {
     title: 'Что делает приложение',
     body: [
-      'Приложение подтягивает выписку из Точка Банка в Битрикс24 и само разносит поступления: находит по платежу нужную сделку или счёт, отмечает оплату и двигает сделку по воронке. Платежи, которые разнести не удалось, остаются в списке со статусом «Ожидает», чтобы их привязать вручную.',
-      'Параллельно о каждом платеже приходит карточка в групповой чат портала — от бота «Точка Банк». Разнесён платёж или нет, переплата это или частичная оплата — видно сразу, не открывая CRM.',
+      'Приложение подтягивает выписку из Модульбанка в Битрикс24 и само разносит поступления: находит по платежу нужную сделку или счёт, отмечает оплату и двигает сделку по воронке. Платежи, которые разнести не удалось, остаются в списке со статусом «Ожидает», чтобы их привязать вручную.',
+      'Параллельно о каждом платеже приходит карточка в групповой чат портала — от бота «Модульбанк». Разнесён платёж или нет, переплата это или частичная оплата — видно сразу, не открывая CRM.',
       'Данные идут только из банка в портал: приложение не списывает деньги и не создаёт платежи в банке, а лишь читает выписку и сопоставляет её с CRM.'
     ]
   },
   {
-    title: 'С чего начать: подключение Точки',
+    title: 'С чего начать: подключение Модульбанка',
     body: [
-      'На первом экране нажмите «Подключить Точка Банк» и авторизуйтесь — откроется окно банка, где нужно разрешить доступ к выписке. После этого приложение увидит ваши счета.',
+      'В личном кабинете Модульбанка откройте «Настройки» → «API» и создайте ключ с правами «account-info» и «operation-history». На первом экране приложения вставьте ключ и нажмите «Подключить Модульбанк». После этого приложение увидит ваши счета.',
       'Выберите счета, по которым нужно получать и разносить платежи. Остальные можно не подключать — лишние поступления не будут попадать в CRM.',
       'Дальше приложение само создаст нужные пользовательские поля в сделках и предложит настроить сопоставление. После этого можно загрузить первую выписку.'
     ]
@@ -54,7 +54,7 @@ const articles: Article[] = [
   {
     title: 'Уведомления в чат от бота',
     body: [
-      'По каждому новому платежу бот «Точка Банк» присылает карточку в групповой чат: разнесён платёж, не разнесён, частичная оплата или переплата. В карточке — сумма, дата, плательщик, ИНН, счёт и сделка со ссылками.',
+      'По каждому новому платежу бот «Модульбанк» присылает карточку в групповой чат: разнесён платёж, не разнесён, частичная оплата или переплата. В карточке — сумма, дата, плательщик, ИНН, счёт и сделка со ссылками.',
       'Чат для уведомлений выбирается в настройках. Если уведомления перестали приходить — проверьте, что чат указан и что бот состоит в этом чате.',
       'Уведомления приходят и по платежам, которые разнесла фоновая синхронизация, а не только по ручной. Повторно по одному платежу карточка не присылается.'
     ]
@@ -88,7 +88,7 @@ const articles: Article[] = [
     body: [
       'Приложение работает от имени того, кто его установил, и видит в CRM ровно то, что видит этот сотрудник. Если часть сделок ему недоступна, по ним платежи не разнесутся.',
       'Поэтому устанавливать приложение и настраивать разнесение лучше администратору портала — так приложению доступны все сделки и счета.',
-      'Доступ к банковской выписке приложение получает только после вашей авторизации в Точке и в объёме, который вы разрешили.'
+      'Доступ к банковской выписке приложение получает только по ключу API, который вы создали в личном кабинете Модульбанка, и в объёме его прав. Платежи по такому ключу сделать нельзя, а отозвать его можно в любой момент.'
     ]
   },
   {
@@ -122,10 +122,10 @@ function preview(article: Article): string {
 
 const firstSteps = [
   {
-    title: 'Подключите Точка Банк',
-    text: 'Авторизуйтесь в банке и выберите счета — приложение увидит выписку.',
+    title: 'Подключите Модульбанк',
+    text: 'Вставьте ключ API Модульбанка и выберите счета — приложение увидит выписку.',
     linkLabel: 'С чего начать',
-    article: 'С чего начать: подключение Точки'
+    article: 'С чего начать: подключение Модульбанка'
   },
   {
     title: 'Загрузите выписку',
@@ -141,7 +141,7 @@ const firstSteps = [
   },
   {
     title: 'Включите уведомления в чат',
-    text: 'Выберите чат — бот «Точка Банк» будет присылать карточку по каждому платежу.',
+    text: 'Выберите чат — бот «Модульбанк» будет присылать карточку по каждому платежу.',
     linkLabel: 'Уведомления в чат от бота',
     article: 'Уведомления в чат от бота'
   }
@@ -164,8 +164,8 @@ function followStep(step: (typeof firstSteps)[number]) {
     <!-- Поиск по руководству -->
     <div class="flex items-center gap-6 rounded-2xl bg-gray-50 px-6 py-6">
       <div class="min-w-0 flex-1">
-        <div class="text-xs font-semibold text-violet-600">
-          Точка Банк. Интеграция · центр помощи
+        <div class="text-xs font-semibold text-brand-600">
+          Модульбанк. Интеграция · центр помощи
         </div>
         <h3 class="mt-2 text-2xl font-semibold">
           Чем помочь?
@@ -183,12 +183,12 @@ function followStep(step: (typeof firstSteps)[number]) {
       <div class="relative hidden size-28 shrink-0 md:block" aria-hidden="true">
         <div class="absolute inset-0 rotate-6 rounded-2xl bg-white shadow-sm" />
         <div class="absolute inset-0 flex items-center justify-center rounded-2xl bg-white shadow-sm">
-          <svg viewBox="0 0 24 24" class="size-12 text-violet-500" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" class="size-12 text-brand-500" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
             <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
           </svg>
         </div>
-        <div class="absolute -bottom-2 -right-2 flex size-10 items-center justify-center rounded-full bg-violet-500 text-white shadow-md">
+        <div class="absolute -bottom-2 -right-2 flex size-10 items-center justify-center rounded-full bg-brand-500 text-white shadow-md">
           <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" />
             <path d="M12 17h.01" />
@@ -207,7 +207,7 @@ function followStep(step: (typeof firstSteps)[number]) {
         class="group rounded-2xl bg-gray-50 px-6 py-5 transition-colors hover:bg-gray-100"
       >
         <div class="flex items-start justify-between gap-3">
-          <div class="flex size-10 items-center justify-center rounded-xl bg-white text-violet-500">
+          <div class="flex size-10 items-center justify-center rounded-xl bg-white text-brand-500">
             <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z" />
             </svg>
@@ -296,7 +296,7 @@ function followStep(step: (typeof firstSteps)[number]) {
 
           <div v-if="!visible.length" class="px-5 py-6 text-sm text-gray-500">
             Ничего не нашлось.
-            <button type="button" class="font-semibold text-violet-600 hover:underline" @click="emit('support')">
+            <button type="button" class="font-semibold text-brand-600 hover:underline" @click="emit('support')">
               Напишите в поддержку
             </button>
             — ответим и добавим раздел.
@@ -327,7 +327,7 @@ function followStep(step: (typeof firstSteps)[number]) {
             </p>
             <button
               type="button"
-              class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-violet-600 hover:underline"
+              class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-brand-600 hover:underline"
               @click="followStep(step)"
             >
               {{ step.linkLabel }}

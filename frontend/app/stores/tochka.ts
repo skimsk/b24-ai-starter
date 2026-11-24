@@ -9,19 +9,51 @@ export interface TochkaAccount {
   customerCode?: string
 }
 
-function normalizeTochkaAccount(raw: Record<string, unknown>): TochkaAccount {
+interface ModulbankAccountRow {
+  accountId: string
+  bankAccountId?: string
+  number?: string
+  name?: string | null
+  category?: string
+  currency?: string
+  status?: string
+  balance?: number | null
+  companyId?: string
+  companyName?: string
+}
+
+const MODULBANK_CATEGORY_LABELS: Record<string, string> = {
+  CheckingAccount: 'Расчётный счёт',
+  CardAccount: 'Карточный счёт',
+  TransitAccount: 'Транзитный счёт',
+  DepositAccount: 'Депозит',
+  DepositRateAccount: 'Депозит',
+  ReservationAccounting: 'Резервный счёт',
+}
+
+function modulbankCurrency(currency?: string): string {
+  return !currency || currency === 'RUR' ? 'RUB' : currency
+}
+
+/** Счёт Модульбанка в формате, который ждёт общий интерфейс (accountId — номер счёта). */
+function normalizeModulbankAccount(raw: ModulbankAccountRow): TochkaAccount {
+  const category = raw.category || ''
   return {
-    accountId: String(raw.accountId ?? raw.AccountId ?? ''),
-    currency: String(raw.currency ?? raw.Currency ?? ''),
-    accountType: String(raw.accountType ?? raw.AccountType ?? ''),
-    accountSubType: String(raw.accountSubType ?? raw.AccountSubType ?? ''),
-    description: String(raw.description ?? raw.Description ?? '').trim() || undefined,
-    customerCode: raw.customerCode != null
-      ? String(raw.customerCode)
-      : raw.CustomerCode != null
-        ? String(raw.CustomerCode)
-        : undefined,
+    accountId: String(raw.accountId ?? ''),
+    currency: modulbankCurrency(raw.currency),
+    accountType: MODULBANK_CATEGORY_LABELS[category] || category,
+    accountSubType: category,
+    description: raw.companyName || (raw.name || '').trim() || undefined,
+    customerCode: raw.companyId,
   }
+}
+
+export interface ModulbankAcquiringSettings {
+  configured: boolean
+  merchantId: string
+  hasSecretKey: boolean
+  testing: boolean
+  callbackUrl: string
 }
 
 export interface TochkaBalance {
@@ -263,7 +295,7 @@ export const useTochkaStore = defineStore('tochka', () => {
 
   async function fetchStatus() {
     try {
-      const data = await $api<TochkaStatus>('/api/tochka/status', {
+      const data = await $api<TochkaStatus>('/api/modulbank/status', {
         headers: _tokenHeader(),
       })
       status.value = {
@@ -295,14 +327,15 @@ export const useTochkaStore = defineStore('tochka', () => {
     }
   }
 
-  async function connect(clientId: string, clientSecret: string) {
+  /** Подключение Модульбанка: ключ API из личного кабинета банка или песочница банка. */
+  async function connect(opts: { apiToken?: string; sandbox?: boolean }) {
     isLoading.value = true
     error.value = null
     try {
-      await $api('/api/tochka/connect', {
+      await $api('/api/modulbank/connect', {
         method: 'POST',
         headers: _tokenHeader(),
-        body: JSON.stringify({ clientId, clientSecret }),
+        body: JSON.stringify(opts.sandbox ? { sandbox: true } : { apiToken: opts.apiToken }),
       })
       await fetchStatus()
     } catch (e: any) {
@@ -334,7 +367,7 @@ export const useTochkaStore = defineStore('tochka', () => {
   async function disconnect() {
     isLoading.value = true
     try {
-      await $api('/api/tochka/disconnect', {
+      await $api('/api/modulbank/disconnect', {
         method: 'POST',
         headers: _tokenHeader(),
       })
@@ -356,12 +389,25 @@ export const useTochkaStore = defineStore('tochka', () => {
     isLoading.value = true
     error.value = null
     try {
-      const data = await $api<any>('/api/tochka/accounts', {
+      const data = await $api<{ accounts: ModulbankAccountRow[] }>('/api/modulbank/accounts', {
         headers: _tokenHeader(),
       })
-      const rawAccounts = data?.Data?.Account || []
-      const list = Array.isArray(rawAccounts) ? rawAccounts : [rawAccounts]
-      accounts.value = list.map((item: Record<string, unknown>) => normalizeTochkaAccount(item))
+      const list = (data?.accounts || []).filter(a => a.status !== 'Closed' && a.status !== 'Deleted')
+      accounts.value = list.map(a => normalizeModulbankAccount(a))
+      // Остаток Модульбанк отдаёт вместе со счётом — раскладываем в формат баланса выписки.
+      const next: Record<string, TochkaBalance[]> = {}
+      for (const a of list) {
+        if (a.balance == null) continue
+        const id = String(a.accountId)
+        next[id] = [{
+          accountId: id,
+          amount: { amount: String(a.balance), currency: modulbankCurrency(a.currency) },
+          creditDebitIndicator: 'Credit',
+          type: 'ClosingAvailable',
+          dateTime: new Date().toISOString(),
+        }]
+      }
+      balances.value = next
     } catch (e: any) {
       error.value = e?.data?.error || 'Failed to load accounts'
       accounts.value = []
@@ -370,16 +416,10 @@ export const useTochkaStore = defineStore('tochka', () => {
     }
   }
 
+  /** У Модульбанка остатки приходят вместе со счетами: перезапрашиваем список счетов. */
   async function fetchBalances(accountId: string) {
-    try {
-      const data = await $api<any>(
-        `/api/tochka/accounts/${accountId}/balances`,
-        { headers: _tokenHeader() }
-      )
-      balances.value[accountId] = data?.Data?.Balance || []
-    } catch {
-      balances.value[accountId] = []
-    }
+    if (balances.value[accountId]?.length) return
+    await fetchAccounts()
   }
 
   async function initStatement(
@@ -417,9 +457,10 @@ export const useTochkaStore = defineStore('tochka', () => {
 
   async function fetchCustomer(): Promise<any> {
     try {
-      return await $api<any>('/api/tochka/customer', {
+      const data = await $api<{ companyName?: string | null; companyInn?: string | null }>('/api/modulbank/status', {
         headers: _tokenHeader(),
       })
+      return { Data: { Customer: [{ shortName: data.companyName, fullName: data.companyName, taxCode: data.companyInn }] } }
     } catch {
       return null
     }
@@ -467,7 +508,7 @@ export const useTochkaStore = defineStore('tochka', () => {
         ? { startDate: params.startDate, endDate: params.endDate }
         : { days: params.days }
     try {
-      const resp = await $api<{ synced: number; lastSync: string }>('/api/tochka/sync', {
+      const resp = await $api<{ synced: number; lastSync: string }>('/api/modulbank/sync', {
         method: 'POST',
         headers: _tokenHeader(),
         body: JSON.stringify(body),
@@ -651,7 +692,20 @@ export const useTochkaStore = defineStore('tochka', () => {
   }
 
   async function fetchAcquiringRetailers(): Promise<any> {
-    return await $api('/api/tochka/acquiring/retailers', { headers: _tokenHeader() })
+    return await $api('/api/modulbank/acquiring/retailers', { headers: _tokenHeader() })
+  }
+
+  /** Доступы интернет-эквайринга Модульбанка (Merchant ID и секретный ключ из ЛК эквайринга). */
+  async function fetchAcquiringSettings(): Promise<ModulbankAcquiringSettings> {
+    return await $api<ModulbankAcquiringSettings>('/api/modulbank/acquiring/settings', { headers: _tokenHeader() })
+  }
+
+  async function saveAcquiringSettings(body: { merchantId: string; secretKey?: string; testing: boolean }) {
+    return await $api<ModulbankAcquiringSettings>('/api/modulbank/acquiring/settings', {
+      method: 'POST',
+      headers: _tokenHeader(),
+      body: JSON.stringify(body),
+    })
   }
 
   async function createAcquiringPaymentLink(body: {
@@ -671,7 +725,7 @@ export const useTochkaStore = defineStore('tochka', () => {
     paymentModesDropped?: string[]
     raw?: any
   }> {
-    return await $api('/api/tochka/acquiring/payment-links', {
+    return await $api('/api/modulbank/acquiring/payment-links', {
       method: 'POST',
       headers: _tokenHeader(),
       body: JSON.stringify(body),
@@ -679,7 +733,7 @@ export const useTochkaStore = defineStore('tochka', () => {
   }
 
   async function refreshAcquiringStatuses(): Promise<{ updated: number }> {
-    return await $api<{ updated: number }>('/api/tochka/acquiring/refresh-statuses', {
+    return await $api<{ updated: number }>('/api/modulbank/acquiring/refresh-statuses', {
       method: 'POST',
       headers: _tokenHeader(),
     })
@@ -694,7 +748,7 @@ export const useTochkaStore = defineStore('tochka', () => {
 
   async function refundAcquiringOperation(operationId: string, body?: { amount?: number }) {
     return await $api<{ success?: boolean; error?: string; code?: string }>(
-      `/api/tochka/acquiring/operations/${operationId}/refund`,
+      `/api/modulbank/acquiring/operations/${operationId}/refund`,
       {
         method: 'POST',
         headers: _tokenHeader(),
@@ -734,6 +788,8 @@ export const useTochkaStore = defineStore('tochka', () => {
     fetchPortalPreferences,
     savePortalPreferences,
     fetchAcquiringRetailers,
+    fetchAcquiringSettings,
+    saveAcquiringSettings,
     createAcquiringPaymentLink,
     refreshAcquiringStatuses,
     unlinkAcquiringOperation,

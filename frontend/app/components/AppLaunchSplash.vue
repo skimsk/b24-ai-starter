@@ -56,16 +56,16 @@ import SplashBrandMark from '~/components/SplashBrandMark.vue'
 .launch-loader__ring--outer {
   inset: 0;
   border-width: 3px;
-  border-top-color: #7f42e1;
-  border-right-color: rgb(127 66 225 / 35%);
+  border-top-color: #0299e5;
+  border-right-color: rgb(2 153 229 / 35%);
   animation: launch-loader-spin 1.15s linear infinite;
 }
 
 .launch-loader__ring--inner {
   inset: 0.5rem;
   border-width: 2px;
-  border-bottom-color: #ffdd2d;
-  border-left-color: rgb(255 221 45 / 45%);
+  border-bottom-color: #d0d501;
+  border-left-color: rgb(208 213 1 / 45%);
   animation: launch-loader-spin-reverse 1.6s linear infinite;
 }
 

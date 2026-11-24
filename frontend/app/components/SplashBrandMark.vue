@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import ModulbankMark from '~/components/ModulbankMark.vue'
+
 withDefaults(
   defineProps<{
     /** Меньший блок для шагов мастера установки (шаг «Приветствие»). */
@@ -11,7 +13,7 @@ withDefaults(
 <template>
   <!-- Полноэкранная загрузка: 14rem; compact — тот же логотип, меньше квадрат -->
   <div
-    class="rounded-2xl flex items-center justify-center bg-[#7F42E1] shadow-md box-border"
+    class="rounded-2xl flex flex-col items-center justify-center gap-2 bg-white border border-[#e5f4fc] shadow-md box-border"
     :class="
       compact
         ? 'px-3 py-3 min-h-[7rem] min-w-[7rem]'
@@ -19,18 +21,10 @@ withDefaults(
     "
     aria-hidden="true"
   >
-    <img
-      src="/tochka-logo-white.png"
-      alt=""
-      width="120"
-      height="48"
-      loading="eager"
-      fetchpriority="high"
-      :class="
-        compact
-          ? 'h-10 w-auto max-w-[6.5rem] object-contain object-center select-none pointer-events-none'
-          : 'h-[3.655rem] w-auto max-w-[9.35rem] object-contain object-center select-none pointer-events-none'
-      "
-    />
+    <ModulbankMark :size="compact ? 52 : 96" />
+    <span
+      class="font-semibold tracking-tight text-[#02245d] select-none"
+      :class="compact ? 'text-[0.8rem]' : 'text-[1.35rem]'"
+    >МодульБанк</span>
   </div>
 </template>

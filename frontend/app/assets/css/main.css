@@ -7,7 +7,58 @@
 }
 
 @theme static {
+  /* Акцентная палитра Модульбанка (заменила фиолетовую Точки): классы bg-brand-500, text-brand-600 и т.д. */
+  --color-brand-50: #eef8fd;
+  --color-brand-100: #e5f4fc;
+  --color-brand-200: #bfe3f7;
+  --color-brand-300: #8fd3f5;
+  --color-brand-400: #0299e5;
+  --color-brand-500: #00225c;
+  --color-brand-600: #003478;
+  --color-brand-700: #0277b8;
+  --color-brand-800: #02245d;
+  --color-brand-900: #001846;
+}
 
+/*
+ * Фирменные цвета Модульбанка для кнопок и акцентов (взяты с официального логотипа):
+ * тёмно-синий текст логотипа, голубой и салатовый пиксели знака.
+ */
+:root {
+  --mb-primary: #00225c;
+  --mb-primary-hover: #003478;
+  --mb-primary-active: #001846;
+  --mb-accent: #0096de;
+  --mb-lime: #c8d400;
+  --mb-soft: #e5f4fc;
+  --mb-soft-hover: #d3ecfa;
+  --mb-soft-active: #bfe3f7;
+  --mb-on-primary: #ffffff;
+}
+
+/* Кнопки B24 UI: основная — синяя Модульбанка, второстепенная — светло-голубая. */
+.--style-filled {
+  --ui-btn-background: var(--mb-primary) !important;
+  --ui-btn-background-hover: var(--mb-primary-hover) !important;
+  --ui-btn-background-active: var(--mb-primary-active) !important;
+  --ui-btn-border-color: var(--mb-primary) !important;
+  --ui-btn-border-color-hover: var(--mb-primary-hover) !important;
+  --ui-btn-border-color-active: var(--mb-primary-active) !important;
+  --ui-btn-color: var(--mb-on-primary) !important;
+  --ui-btn-color-hover: var(--mb-on-primary) !important;
+  --ui-btn-color-active: var(--mb-on-primary) !important;
+}
+
+.--style-tinted {
+  --ui-btn-background: var(--mb-soft) !important;
+  --ui-btn-background-hover: var(--mb-soft-hover) !important;
+  --ui-btn-background-active: var(--mb-soft-active) !important;
+  --ui-btn-border-color: var(--mb-soft) !important;
+  --ui-btn-border-color-hover: var(--mb-soft-hover) !important;
+  --ui-btn-border-color-active: var(--mb-soft-active) !important;
+  --ui-btn-color: var(--mb-primary) !important;
+  --ui-btn-color-hover: var(--mb-primary) !important;
+  --ui-btn-color-active: var(--mb-primary) !important;
 }
 
 /* White background for B24 sidebar layout (used on non-setup pages) */

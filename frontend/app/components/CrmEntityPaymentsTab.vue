@@ -307,7 +307,7 @@ function statusColor(s: string): string {
     pending: 'bg-yellow-50 text-yellow-700',
     matched: 'bg-green-50 text-green-600',
     applied: 'bg-green-50 text-green-700',
-    refunded: 'bg-violet-50 text-violet-800',
+    refunded: 'bg-lime-50 text-lime-800',
     error: 'bg-red-50 text-red-700',
     ignored: 'bg-gray-100 text-gray-500',
   }
@@ -655,7 +655,7 @@ watch(createLinkKind, () => {
 
       <div
         v-if="showCreateLinkModal"
-        class="rounded-xl border border-violet-200 bg-violet-50/60 p-4 space-y-3 shadow-sm"
+        class="rounded-xl border border-brand-200 bg-brand-50/60 p-4 space-y-3 shadow-sm"
       >
         <h3 class="text-sm font-semibold text-gray-900">
           {{ t('placement.crm_entity_payments.create_link_title') }}
@@ -704,16 +704,6 @@ watch(createLinkKind, () => {
             </select>
           </label>
           <label class="block text-xs text-gray-600 sm:col-span-2">
-            {{ t('placement.crm_entity_payments.create_link_merchant_hint') }}
-            <input
-              v-model="createLinkMerchantId"
-              type="text"
-              class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"
-              :placeholder="t('placement.crm_entity_payments.create_link_merchant_placeholder')"
-              @blur="loadRetailersForModal"
-            />
-          </label>
-          <label class="block text-xs text-gray-600 sm:col-span-2">
             {{ t('placement.crm_entity_payments.create_link_purpose') }}
             <textarea
               v-model="createLinkPurpose"
@@ -728,7 +718,7 @@ watch(createLinkKind, () => {
               <span class="text-[11px] text-gray-500 shrink-0">{{ t('placement.crm_entity_payments.create_link_purpose_snippets') }}</span>
               <button
                 type="button"
-                class="inline-flex items-center rounded-full border border-violet-200 bg-white px-2 py-0.5 text-[11px] text-violet-800 hover:bg-violet-50 disabled:opacity-40 disabled:pointer-events-none"
+                class="inline-flex items-center rounded-full border border-[var(--mb-soft-active)] bg-white px-2 py-0.5 text-[11px] text-[var(--mb-primary)] hover:bg-[var(--mb-soft)] disabled:opacity-40 disabled:pointer-events-none"
                 :disabled="!canInsertTitleSnippet"
                 @click="insertSnippetTitle"
               >
@@ -736,14 +726,14 @@ watch(createLinkKind, () => {
               </button>
               <button
                 type="button"
-                class="inline-flex items-center rounded-full border border-violet-200 bg-white px-2 py-0.5 text-[11px] text-violet-800 hover:bg-violet-50"
+                class="inline-flex items-center rounded-full border border-[var(--mb-soft-active)] bg-white px-2 py-0.5 text-[11px] text-[var(--mb-primary)] hover:bg-[var(--mb-soft)]"
                 @click="insertSnippetNo"
               >
                 {{ t('placement.crm_entity_payments.create_link_purpose_snippet_no', { no: entityId }) }}
               </button>
               <button
                 type="button"
-                class="inline-flex items-center rounded-full border border-violet-200 bg-white px-2 py-0.5 text-[11px] text-violet-800 hover:bg-violet-50"
+                class="inline-flex items-center rounded-full border border-[var(--mb-soft-active)] bg-white px-2 py-0.5 text-[11px] text-[var(--mb-primary)] hover:bg-[var(--mb-soft)]"
                 :title="formatPurposeDate(purposeEffectiveDate())"
                 @click="insertSnippetDate"
               >
@@ -751,21 +741,21 @@ watch(createLinkKind, () => {
               </button>
               <button
                 type="button"
-                class="inline-flex items-center rounded-full border border-violet-200 bg-white px-2 py-0.5 text-[11px] tabular-nums text-violet-800 hover:bg-violet-50"
+                class="inline-flex items-center rounded-full border border-[var(--mb-soft-active)] bg-white px-2 py-0.5 text-[11px] tabular-nums text-[var(--mb-primary)] hover:bg-[var(--mb-soft)]"
                 @click="insertPercent(30)"
               >
                 {{ t('placement.crm_entity_payments.create_link_purpose_snippet_pct_30') }}
               </button>
               <button
                 type="button"
-                class="inline-flex items-center rounded-full border border-violet-200 bg-white px-2 py-0.5 text-[11px] tabular-nums text-violet-800 hover:bg-violet-50"
+                class="inline-flex items-center rounded-full border border-[var(--mb-soft-active)] bg-white px-2 py-0.5 text-[11px] tabular-nums text-[var(--mb-primary)] hover:bg-[var(--mb-soft)]"
                 @click="insertPercent(50)"
               >
                 {{ t('placement.crm_entity_payments.create_link_purpose_snippet_pct_50') }}
               </button>
               <button
                 type="button"
-                class="inline-flex items-center rounded-full border border-violet-200 bg-white px-2 py-0.5 text-[11px] tabular-nums text-violet-800 hover:bg-violet-50"
+                class="inline-flex items-center rounded-full border border-[var(--mb-soft-active)] bg-white px-2 py-0.5 text-[11px] tabular-nums text-[var(--mb-primary)] hover:bg-[var(--mb-soft)]"
                 @click="insertPercent(70)"
               >
                 {{ t('placement.crm_entity_payments.create_link_purpose_snippet_pct_70') }}
@@ -800,8 +790,8 @@ watch(createLinkKind, () => {
             {{ t('placement.crm_entity_payments.channel.sbp') }}
           </label>
           <label
-            class="inline-flex items-center gap-2"
-            :class="retailerMirAvailable ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'"
+            v-if="retailerMirAvailable"
+            class="inline-flex items-center gap-2 cursor-pointer"
           >
             <input
               v-model="linkModeMir"
@@ -812,8 +802,8 @@ watch(createLinkKind, () => {
             {{ t('placement.crm_entity_payments.channel.mir_pay') }}
           </label>
           <label
-            class="inline-flex items-center gap-2"
-            :class="retailerDolyameAvailable ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'"
+            v-if="retailerDolyameAvailable"
+            class="inline-flex items-center gap-2 cursor-pointer"
           >
             <input
               v-model="linkModeDolyame"
@@ -826,12 +816,6 @@ watch(createLinkKind, () => {
         </div>
         <p class="text-[11px] leading-snug text-gray-500 mt-1">
           {{ t('placement.crm_entity_payments.create_link_modes_tochka_help') }}
-        </p>
-        <p
-          v-if="createLinkRetailerModes && createLinkRetailerModes.size > 0 && (!retailerMirAvailable || !retailerDolyameAvailable)"
-          class="text-[11px] leading-snug text-amber-800 mt-1"
-        >
-          {{ t('placement.crm_entity_payments.create_link_modes_retailer_missing') }}
         </p>
         <p
           v-if="createLinkLowAmountForExtraModes"
@@ -899,11 +883,11 @@ watch(createLinkKind, () => {
               <tr>
                 <td colspan="9" class="py-3 px-2">
                   <div class="flex w-full items-center gap-3">
-                    <div class="min-h-px flex-1 bg-violet-200" />
-                    <span class="shrink-0 text-sm font-medium text-violet-600">
+                    <div class="min-h-px flex-1 bg-brand-200" />
+                    <span class="shrink-0 text-sm font-medium text-brand-600">
                       {{ dateKey === 'unknown' ? '—' : formatDateHeader(`${dateKey}T12:00:00`) }}
                     </span>
-                    <div class="min-h-px flex-1 bg-violet-200" />
+                    <div class="min-h-px flex-1 bg-brand-200" />
                   </div>
                 </td>
               </tr>
@@ -966,7 +950,7 @@ watch(createLinkKind, () => {
                   <template v-if="p.source === 'acquiring' && p.counterparty_contact_id">
                     <button
                       type="button"
-                      class="text-left text-violet-700 hover:underline truncate max-w-full"
+                      class="text-left text-brand-700 hover:underline truncate max-w-full"
                       @click="openContact(p.counterparty_contact_id)"
                     >
                       {{ p.counterparty_name || '—' }}
@@ -975,7 +959,7 @@ watch(createLinkKind, () => {
                   <template v-else-if="p.counterparty_company_id">
                     <button
                       type="button"
-                      class="text-left text-violet-700 hover:underline truncate max-w-full"
+                      class="text-left text-brand-700 hover:underline truncate max-w-full"
                       @click="openCompany(p.counterparty_company_id)"
                     >
                       {{ p.counterparty_name || '—' }}
@@ -984,7 +968,7 @@ watch(createLinkKind, () => {
                   <template v-else-if="p.counterparty_contact_id">
                     <button
                       type="button"
-                      class="text-left text-violet-700 hover:underline truncate max-w-full"
+                      class="text-left text-brand-700 hover:underline truncate max-w-full"
                       @click="openContact(p.counterparty_contact_id)"
                     >
                       {{ p.counterparty_name || '—' }}
@@ -998,7 +982,7 @@ watch(createLinkKind, () => {
                   <template v-if="p.source !== 'acquiring' && p.counterparty_company_id && p.counterparty_inn">
                     <button
                       type="button"
-                      class="hover:text-violet-700 hover:underline"
+                      class="hover:text-brand-700 hover:underline"
                       @click="openCompany(p.counterparty_company_id)"
                     >
                       {{ p.counterparty_inn }}

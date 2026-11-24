@@ -33,7 +33,7 @@ REQUEST_TIMEOUT_SECONDS = 10
 #: остаётся в базе.
 MESSAGE_LIMIT = 3500
 
-APP_TITLE = "Точка Банк. Интеграция"
+APP_TITLE = "Модульбанк. Интеграция"
 
 
 def is_configured() -> bool:

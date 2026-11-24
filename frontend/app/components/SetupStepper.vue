@@ -16,7 +16,7 @@ const props = defineProps<{
             class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold transition-all border-2"
             :class="{
               'bg-green-500 border-green-500 text-white': currentStep > step.id,
-              'bg-violet-600 border-violet-600 text-white': currentStep === step.id,
+              'bg-brand-600 border-brand-600 text-white': currentStep === step.id,
               'bg-white border-gray-300 text-gray-400': currentStep < step.id,
             }"
           >
@@ -34,7 +34,7 @@ const props = defineProps<{
             class="text-[10px] mt-1 whitespace-nowrap"
             :class="{
               'text-green-600': currentStep > step.id,
-              'text-violet-600 font-medium': currentStep === step.id,
+              'text-brand-600 font-medium': currentStep === step.id,
               'text-gray-400': currentStep < step.id,
             }"
           >

@@ -10,6 +10,24 @@ from .views_acquiring import (
     tochka_acquiring_unlink,
     tochka_acquiring_webhook,
 )
+from .views_modulbank import (
+    modulbank_accounts,
+    modulbank_connect,
+    modulbank_disconnect,
+    modulbank_status,
+    modulbank_sync,
+    modulbank_webhook,
+)
+from .views_modulbank_acquiring import (
+    modulbank_acquiring_callback,
+    modulbank_acquiring_create_payment_link,
+    modulbank_acquiring_refresh_statuses,
+    modulbank_acquiring_refund,
+    modulbank_acquiring_retailers,
+    modulbank_acquiring_settings,
+    modulbank_pay_done,
+    modulbank_pay_page,
+)
 from .views_tochka import (
     tochka_status,
     tochka_connect,
@@ -57,6 +75,21 @@ urlpatterns = [
     path('api/tochka/acquiring/refresh-statuses', tochka_acquiring_refresh_statuses, name='tochka_acquiring_refresh_statuses'),
     path('api/tochka/acquiring/operations/<uuid:operation_id>/unlink', tochka_acquiring_unlink, name='tochka_acquiring_unlink'),
     path('api/tochka/acquiring/operations/<uuid:operation_id>/refund', tochka_acquiring_refund, name='tochka_acquiring_refund'),
+    # Модульбанк
+    path('api/modulbank/status', modulbank_status, name='modulbank_status'),
+    path('api/modulbank/connect', modulbank_connect, name='modulbank_connect'),
+    path('api/modulbank/disconnect', modulbank_disconnect, name='modulbank_disconnect'),
+    path('api/modulbank/accounts', modulbank_accounts, name='modulbank_accounts'),
+    path('api/modulbank/sync', modulbank_sync, name='modulbank_sync'),
+    path('api/modulbank/webhook/<str:webhook_key>', modulbank_webhook, name='modulbank_webhook'),
+    path('api/modulbank/acquiring/settings', modulbank_acquiring_settings, name='modulbank_acquiring_settings'),
+    path('api/modulbank/acquiring/retailers', modulbank_acquiring_retailers, name='modulbank_acquiring_retailers'),
+    path('api/modulbank/acquiring/payment-links', modulbank_acquiring_create_payment_link, name='modulbank_acquiring_create_payment_link'),
+    path('api/modulbank/acquiring/refresh-statuses', modulbank_acquiring_refresh_statuses, name='modulbank_acquiring_refresh_statuses'),
+    path('api/modulbank/acquiring/callback', modulbank_acquiring_callback, name='modulbank_acquiring_callback'),
+    path('api/modulbank/acquiring/operations/<uuid:operation_id>/refund', modulbank_acquiring_refund, name='modulbank_acquiring_refund'),
+    path('api/modulbank/pay/<uuid:operation_id>', modulbank_pay_page, name='modulbank_pay_page'),
+    path('api/modulbank/pay/<uuid:operation_id>/done', modulbank_pay_done, name='modulbank_pay_done'),
     # Поддержка
     path('api/support', support_submit, name='support_submit'),
     path('api/support/thread/<uuid:ticket_id>', support_thread, name='support_thread'),

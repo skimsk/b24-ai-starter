@@ -29,7 +29,7 @@ onUnmounted(() => {
 
       <h1 class="setup-complete__title">Готово!</h1>
       <p class="setup-complete__text">
-        Интеграция с Точка Банком настроена. Платежи будут автоматически синхронизироваться с CRM.
+        Интеграция с Модульбанком настроена. Платежи будут автоматически синхронизироваться с CRM.
       </p>
 
       <div class="setup-complete__summary">
@@ -173,7 +173,7 @@ onUnmounted(() => {
   font-size: 0.875rem;
   font-weight: 500;
   color: #fff;
-  background: #8b5cf6;
+  background: var(--mb-primary);
   border: none;
   border-radius: 0.75rem;
   cursor: pointer;
@@ -181,6 +181,6 @@ onUnmounted(() => {
 }
 
 .setup-complete__btn:hover {
-  background: #7c3aed;
+  background: var(--mb-primary-hover);
 }
 </style>

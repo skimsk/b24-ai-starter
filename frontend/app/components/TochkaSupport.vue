@@ -197,7 +197,7 @@ onUnmounted(stopPoll)
       <div class="shrink-0 px-5 pt-5">
         <div class="flex items-start justify-between gap-3">
           <div class="flex items-center gap-2.5">
-            <div class="flex size-9 items-center justify-center rounded-xl bg-violet-500 text-white">
+            <div class="flex size-9 items-center justify-center rounded-xl bg-brand-500 text-white">
               <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
@@ -229,7 +229,7 @@ onUnmounted(stopPoll)
       <!-- Переписка -->
       <div ref="body" class="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-4">
         <div v-if="!messages.length && !isLoading" class="m-auto text-center">
-          <div class="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-violet-100 text-violet-600">
+          <div class="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-brand-100 text-brand-600">
             <svg viewBox="0 0 24 24" class="size-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
             </svg>
@@ -250,7 +250,7 @@ onUnmounted(stopPoll)
             <div v-if="item.author === 'support'" class="flex size-7 shrink-0 items-center justify-center rounded-full bg-gray-100 text-[10px] font-semibold text-gray-600">АД</div>
             <div
               class="max-w-[78%] whitespace-pre-wrap break-words rounded-2xl px-3 py-2 text-sm"
-              :class="item.author === 'user' ? 'bg-violet-500 text-white' : 'bg-gray-100 text-gray-900'"
+              :class="item.author === 'user' ? 'bg-brand-500 text-white' : 'bg-gray-100 text-gray-900'"
             >
               <template v-if="item.text">{{ item.text }}</template>
             </div>
@@ -262,13 +262,13 @@ onUnmounted(stopPoll)
           <div class="mt-2 flex gap-2">
             <input
               v-model="contact"
-              class="min-w-0 flex-1 rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-100"
+              class="min-w-0 flex-1 rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
               placeholder="ivan@example.ru или телефон"
               @keydown.enter="saveContact"
             >
             <button
               type="button"
-              class="shrink-0 rounded-xl bg-violet-500 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+              class="shrink-0 rounded-xl bg-brand-500 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
               :disabled="!contact.trim() || isSending"
               @click="saveContact"
             >Ок</button>
@@ -303,14 +303,14 @@ onUnmounted(stopPoll)
           <textarea
             v-model="message"
             rows="1"
-            class="max-h-24 min-h-11 flex-1 resize-none rounded-2xl border border-gray-200 px-4 py-3 text-sm focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-100"
+            class="max-h-24 min-h-11 flex-1 resize-none rounded-2xl border border-gray-200 px-4 py-3 text-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
             placeholder="Сообщение"
             @keydown="onKeydown"
           />
           <button
             type="button"
             class="flex size-11 shrink-0 items-center justify-center rounded-xl transition-colors"
-            :class="canSend ? 'bg-violet-500 text-white' : 'bg-gray-100 text-gray-400'"
+            :class="canSend ? 'bg-brand-500 text-white' : 'bg-gray-100 text-gray-400'"
             :disabled="!canSend"
             aria-label="Отправить"
             @click="send"

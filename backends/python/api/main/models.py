@@ -322,6 +322,48 @@ class TochkaPayment(models.Model):
         unique_together = ("member_id", "transaction_id")
 
 
+def _new_webhook_key() -> str:
+    import secrets
+
+    return secrets.token_urlsafe(24)
+
+
+class ModulbankCredentials(models.Model):
+    """Подключение портала к Модульбанку.
+
+    Пока банк не выдал приложению OAuth (регистрация через api@modulbank.ru),
+    клиент вставляет ключ API из личного кабинета Модульбанка. Ключ также
+    подписывает вебхуки о новых операциях, поэтому хранится целиком.
+    """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    member_id = models.CharField(max_length=255, unique=True)
+    api_token = models.TextField(blank=True, default="")
+    sandbox = models.BooleanField(default=False)
+    is_connected = models.BooleanField(default=False)
+    company_id = models.CharField(max_length=64, blank=True, default="")
+    company_name = models.CharField(max_length=255, blank=True, default="")
+    company_inn = models.CharField(max_length=12, blank=True, default="")
+    webhook_key = models.CharField(max_length=64, unique=True, default=_new_webhook_key)
+    last_sync_attempt_at = models.DateTimeField(null=True, blank=True)
+    # Интернет-эквайринг (pay.modulbank.ru): доступы из ЛК эквайринга, не ключ API выписки.
+    acquiring_merchant_id = models.CharField(max_length=64, blank=True, default="")
+    acquiring_secret_key = models.CharField(max_length=255, blank=True, default="")
+    acquiring_testing = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def acquiring_configured(self) -> bool:
+        return bool(self.acquiring_merchant_id and self.acquiring_secret_key)
+
+    class Meta:
+        db_table = "modulbank_credentials"
+
+    def __str__(self) -> str:
+        return f"{self.company_name or self.member_id} (Модульбанк)"
+
+
 class SupportTicket(models.Model):
     """Обращение в поддержку из приложения.
 

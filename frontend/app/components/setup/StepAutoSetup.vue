@@ -158,7 +158,7 @@ onMounted(async () => {
 
 .setup-auto__icon--active {
   border: 2px solid #e5e7eb;
-  border-top-color: #8b5cf6;
+  border-top-color: var(--mb-accent);
   animation: setup-auto-spin 0.8s linear infinite;
 }
 
