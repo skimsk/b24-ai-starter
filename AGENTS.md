@@ -1,6 +1,6 @@
 # AGENTS.md
 
-<sub>Last reviewed: 2026-10-08.</sub>
+<sub>Last reviewed: 2026-11-25.</sub>
 
 Единый источник правды для ИИ-агентов и людей, работающих с репозиторием `b24-ai-starter`. `CLAUDE.md` — ссылка на этот файл. Подробные руководства лежат в `.github/contributing/` и `instructions/` — загружай их только когда они относятся к задаче.
 
@@ -63,6 +63,12 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
 | `implement-b24-features` | Виджеты, роботы, события, очереди |
 | `bitrix24-mcp-server` | Поиск методов REST API через MCP |
 
+## Агенты Claude Code (`.claude/agents/`)
+
+| Агент | Когда |
+| --- | --- |
+| `b24-app-builder` | Присылают скриншоты и описание нового приложения: собрать его под ключ, от кода и деплоя на 1daa.ru до карточки, картинок и модерации в Битрикс24 Маркетплейсе. Правила — `instructions/marketplace/` |
+
 ## Документация
 
 | Где | Что |
@@ -71,6 +77,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
 | `instructions/front/` | Фронтенд: JS SDK, UI Kit, рецепты компонентов |
 | `instructions/{php,python,node}/` | Бэкенды, включая `code-review.md` для каждого |
 | `instructions/bitrix24/`, `instructions/queues/` | Виджеты, роботы, MCP; очереди |
+| `instructions/marketplace/` | Публикация в Битрикс24 Маркетплейсе: кабинет вендора, тексты карточки, стиль картинок, загрузка медиа |
 | `.github/contributing/` | Процессы: ревью, зависимости, [план проверки](.github/contributing/testing.md) и [план живой проверки](.github/contributing/live-test-plan.md) и известные проблемы кода |
 
 Документация обновляется **в том же PR**, что и код. Устаревшая документация — такой же баг, как упавший тест: агенты копируют примеры из `instructions/` дословно.

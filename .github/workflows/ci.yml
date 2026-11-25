@@ -175,6 +175,8 @@ jobs:
             CHANGELOG.md
             .github/contributing/**/*.md
             .claude/skills/**/*.md
+            .claude/agents/**/*.md
+            instructions/marketplace/**/*.md
 
   docker:
     name: Docker images (build · smoke)
